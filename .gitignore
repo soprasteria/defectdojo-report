@@ -1,0 +1,9 @@
+#
+# .gitignore
+#
+
+node_modules/
+*.csv
+*.html
+*.json
+!package*.json

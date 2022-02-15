@@ -1,0 +1,27 @@
+{
+  "name": "dd-to-osdf",
+  "version": "1.0.0",
+  "description": "Outil permettant d'exporter la dette sécurité au format Orange depuis DefectDojo",
+  "main": "./src/main.js",
+  "bin": "./src/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://innersource.soprasteria.com/gael.girodon/dd-to-osdf.git"
+  },
+  "keywords": [
+    "security",
+    "debt",
+    "orange",
+    "defectdojo"
+  ],
+  "author": "Gaël Girodon <gael.girodon@soprasteria.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "node-fetch": "^3.2.0"
+  }
+}
