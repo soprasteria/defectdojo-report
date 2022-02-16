@@ -13,23 +13,23 @@ import ejs from "ejs";
  */
 const headers = [
   "Application", // or BASICAT
-  "Origin of the audit", // Initial, Run, Alert, Reversibility
-  "Date of first detection",
-  "Application version of first detection", // GOROCO
-  "Security tools used", // Dependency-Check, SonarQube, ZAP, Checkmarx, Manual or Others
-  "Tool (or pattern) version",
-  "Location of the vulnerability", // Class or file name
-  "Title of the vulnerability", // from the security tools of alert bulleting
-  "Nb occurrences",
+  "Audit origin", // Initial, Run, Alert, Reversibility
+  "Detection date",
+  "Application version", // X.Y.Z or GOROCO
+  "Security tool", // Dependency-Check, SonarQube, ZAP, Checkmarx, Manual or Others
+  "Tool or pattern version",
+  "Location", // Class or file name
+  "Title", // from the security tools of alert bulleting
+  "Occurrences",
   "Impact", // Audit vision
   "Ease of exploitation",
   "Resultant criticity",
-  "Effort for fixing vulnerability", // Low, Medium or High
+  "Remediation effort", // Low, Medium or High
   "Status", // Open, Analyzed, Waiting, Planned, Processed, Cancelled or Duplicate
   "Recurrence", // New, Recurrent, Fixed or Duplicate
-  "App release that contains the fix", // if planned or processed
-  "Responsibility Sopra Steria", // Y/N
-  "Origin of responsibility", // Framework, third-party code, detected in the beginning of the project
+  "Fixed application version", // if planned or processed
+  "Sopra Steria responsibility", // Y/N
+  "Responsibility origin", // Framework, third-party code, detected in the beginning of the project
   "Comments",
   "Mitigation"
 ];

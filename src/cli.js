@@ -15,8 +15,8 @@ const statuses = ["active", "verified", "false_p", "duplicate", "out_of_scope", 
 const expectedArgs = [
   { name: "url", env: "DEFECTDOJO_URL", pattern: /^https?:\/\/.+$/ },
   { name: "token", env: "DEFECTDOJO_TOKEN", pattern: /^\w{40}$/ },
-  { name: "product", env: "DEFECTDOJO_PRODUCT", pattern: /^[\w-\/]+$/ },
-  { name: "engagement", env: "DEFECTDOJO_ENGAGEMENT", pattern: /^[\w-\/]+$/ },
+  { name: "product", env: "DEFECTDOJO_PRODUCT", pattern: /^[\w-\/.]+$/ },
+  { name: "engagement", env: "DEFECTDOJO_ENGAGEMENT", pattern: /^[\w-\/.]+$/ },
   { name: "statuses", env: "DEFECTDOJO_STATUSES", pattern: `^((${statuses.map(s => "!?" + s).join("|")})[,$])+`, default: "active" },
   { name: "output", env: "SECDEBT_OUTPUT", pattern: `.+`, default: null },
   { name: "formats", env: "SECDEBT_FORMATS", pattern: /^((csv|html|json)[,$])+/, default: "csv,html,json" }

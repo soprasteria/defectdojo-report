@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Security Debt - <%= product.name %></title>
+  <title>Security Debt - <%= product.title %></title>
   <style>
     /* Global */
     html, body {
@@ -27,9 +27,22 @@
       width: 200px;
     }
     h2 {
-      font-weight: 500;
+      display: flex;
+      align-items: center;
       margin-top: -10px;
+      font-weight: 500;
       color: #d31900;
+    }
+    h2 .tag {
+      margin: 3px 6px 0 0;
+      padding: 1px 6px 2px 6px;
+      background-color: #999;
+      border-radius: 6px;
+      font-size: medium;
+      color: white;
+    }
+    h2 span:not(.tag) {
+      margin-right: 16px;
     }
     /* Table */
     .table-container {
@@ -86,7 +99,15 @@
       <span>Security Debt</span>
       <img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNDAiIGhlaWdodD0iMzEiIHZpZXdCb3g9IjAgMCAyNDAgMzEiPjxnIGZpbGw9IiMxQTFEMUQiPjxwYXRoIGQ9Ik0xNjcuMjQgOS44MzNoLTMuNlY2LjgyaDMuNlYyLjM1aDMuNDl2NC40N2g1Ljc0djMuMDEzaC01Ljc0djkuMDc0YzAgMi4yNy42MzIgMy40NiAzLjU0IDMuNDYgMS4xMTMgMCAyLjM2Mi0uMzIgMi4zNjItLjMydjMuMTRjLTEuMjEyLjE2NS0yLjA5NS4yNjMtMy40Ny4yNjMtNS40OTUgMC01LjkyMi0zLjk2LTUuOTIyLTYuMTNWOS44MzJ6TTIxMy41ODcgNi44aDMuNTcydjE4LjY5NGgtMy41NzN6TTIyMy40NzIgMTYuMDFjMCA1LjA5MiA0LjE5MyA2LjM2IDYuMTg0IDYuMzYgMy43OTQgMCA2LjQ3Mi0yLjE0NSA2LjQ3Mi02LjQzMyAwLTQuMjktMy4wNDUtNi4yNTYtNi41MS02LjI1Ni0xLjk2NSAwLTYuMTQ2IDEuMTU4LTYuMTQ2IDYuMzN6bS0zLjYzMy0uMDM4YzAtNy4wMyA1LjY4LTkuNDE3IDkuNjMtOS40MTcgNC40OCAwIDYuNjU3IDIuNTcgNi42NTcgMi41N2wuMTg1LTIuMzIzaDMuMjY0VjI1LjUzaC0zLjI3bC0uMTgtMi40NzRzLTIuMjM2IDIuNDgtNi42OTcgMi40OGMtNC40OCAwLTkuNTktMi42LTkuNTktOS41NjR6Ii8+PGNpcmNsZSBjeD0iMjE1LjM3MyIgY3k9IjIuNDg2IiByPSIyLjMzNyIvPjxwYXRoIGQ9Ik0yMTAuOTc4IDEwLjAxNFY2Ljg1Yy0zLjUyOC0uMzI0LTYuMDA0LjUyLTcuOTMzIDIuNTM4bC0uMTg4LTIuNThoLTMuMzl2MTguNzFoMy41Nzd2LTkuNjk1YzAtMi43MDIgMi4xNzgtNi4xMzIgNy45MzQtNS44MXpNMTc3LjMzIDE2LjA0NGMwLTUuODQ4IDQuMzE4LTkuNjAzIDEwLjA5My05LjYwMyA1LjczNCAwIDkuNjc0IDQuMTkgOS42NzQgOS4yOCAwIDAgMCAuNzk1LS4wNzQgMS41MTZsLTE1Ljk3Ny4wN2MuMTUyIDIuODg3IDMuNDg1IDUuMDYgNi45MjYgNS4wNiAzLjcwNiAwIDUuOTAyLTIuMjkgNS45MDItMi4yOWwyLjU1NyAyLjI0N2MtMi41OTQgMi40OS01LjQyNCAzLjI0OC04LjQ1NyAzLjI0OC02LjMgMC0xMC42NDQtMy42OC0xMC42NDQtOS4zODJ2LS4xNDR6bTE1Ljg0My0xLjYwNmMwLTIuNTQyLTIuNTYtNC42Ni01LjcwMi00LjY2LTMuMzYzIDAtNi4xNDYgMi4wNzYtNi4zNyA0LjY2aDEyLjA3M3pNMTU1Ljk5MyAxNC4zNmMtMy41OTctLjY0My03LjEzMy0xLjA5Mi03LjEzMy0yLjc3IDAtMS4wOTMgMS4wODQtMi4wNTMgNC4yMzItMi4wNTMgMi4zNCAwIDUuMDQuNTQgNS43NyAyLjE5OGwzLjMxNy0xLjM5MmMtMS4yNy0yLjU1LTUuMDIzLTMuNzc1LTkuMzM3LTMuNzc1LTMuNzcgMC03LjgxOCAxLjQyOC03LjgxOCA1LjI0NSAwIDMuMzA1IDMuMDEgNC4zMzQgNy45NyA1LjI2OCAzLjMxNi42MjUgNi4zNzMuOTQgNi4zNzMgMi43MjcgMCAxLjEzLTEuNTA0IDIuNTc1LTUuMjYzIDIuNTc1LTIuNjczIDAtNS4zNjgtLjU2Mi02LjE5LTIuNDY0bC0zLjIxOCAxLjM1YzEuMzE4IDIuOTM4IDQuODE4IDQuNDYgOC44NzIgNC40NiA4LjA5NCAwIDkuNjU4LTMuODUzIDkuNjU4LTYuMDM4IDAtMy42NDItMy42MjItNC42ODQtNy4yMzUtNS4zM3oiLz48L2c+PHBhdGggZmlsbD0iIzFBMUQxRCIgZD0iTTUzLjAzIDkuNjhjLTMuNDY3IDAtNi41MSAxLjk2Ni02LjUxIDYuMjU3IDAgNC4yOSAyLjY3NiA2LjQzMiA2LjQ3MyA2LjQzMiAxLjk4NiAwIDYuMTgyLS44MDcgNi4xODItNi4zNiAwLTUuNTU1LTQuMTg0LTYuMzMtNi4xNDYtNi4zM3ptLjE4NiAxNS44NTVjLTQuNDc3IDAtNi42OTUtMi44NDYtNi42OTUtMi44NDZ2Ny44NzZoLTMuNDVWNi44MDNoMy4yNjdsLjE4NSAyLjMyM3MyLjE3My0yLjU3IDYuNjU2LTIuNTdjMy45NDcgMCA5LjYzIDIuMDEyIDkuNjMgOS40MTdzLTUuMTE2IDkuNTYyLTkuNTkyIDkuNTYyek03OS44OCAxNi4wMWMwIDUuMDkyIDQuMTk1IDYuMzYgNi4xODQgNi4zNiAzLjc5NiAwIDYuNDctMi4xNDUgNi40Ny02LjQzMyAwLTQuMjktMy4wNC02LjI1Ni02LjUwNy02LjI1Ni0xLjk2NCAwLTYuMTQ2IDEuMTU4LTYuMTQ2IDYuMzN6bS0zLjYzLS4wMzhjMC03LjAzIDUuNjgtOS40MTcgOS42My05LjQxNyA0LjQ4IDAgNi42NTQgMi41NyA2LjY1NCAyLjU3bC4xODUtMi4zMjNoMy4yNjZWMjUuNTNoLTMuMjU4bC0uMTkzLTIuNDc0cy0yLjIzNiAyLjQ4LTYuNjk2IDIuNDhjLTQuNDc4IDAtOS41OS0yLjYtOS41OS05LjU2NHpNNzYuNTEgMTAuMDE0VjYuODVjLTMuNTI4LS4zMjQtNi4wMDYuNTItNy45MzcgMi41MzhsLS4xODMtMi41OEg2NXYxOC43MWgzLjU3M3YtOS42OTVjMC0yLjcwMiAyLjE4Mi02LjEzMiA3LjkzNi01Ljgxek0xMS42MiAxNC4zNmMtMy41OTgtLjY0My03LjEzMy0xLjA5Mi03LjEzMy0yLjc3IDAtMS4wOTMgMS4wOC0yLjA1MyA0LjIzLTIuMDUzIDIuMzQgMCA1LjA0LjU0IDUuNzcyIDIuMTk4bDMuMzE3LTEuMzkyYy0xLjI3LTIuNTUtNS4wMjQtMy43NzUtOS4zMzYtMy43NzUtMy43NyAwLTcuODIgMS40MjgtNy44MiA1LjI0NSAwIDMuMzA1IDMuMDEgNC4zMzQgNy45NzQgNS4yNjggMy4zMTIuNjI1IDYuMzcyLjk0IDYuMzcyIDIuNzI3IDAgMS4xMy0xLjUwNSAyLjU3NS01LjI2MyAyLjU3NS0yLjY3NCAwLTUuMzctLjU2Mi02LjE5My0yLjQ2NGwtMy4yMTUgMS4zNWMxLjMxNiAyLjkzOCA0LjgxNyA0LjQ2IDguODcgNC40NiA4LjA5NSAwIDkuNjYtMy44NTMgOS42Ni02LjAzOCAwLTMuNjQyLTMuNjIyLTQuNjg0LTcuMjM2LTUuMzN6TTMwLjcyMyA2LjU1NmMtNC43OCAwLTEwLjQ0IDIuMzg4LTEwLjQ0IDkuNDE3IDAgNi45NjIgNS4wOTQgOS42NjcgMTAuNDQgOS42NjcgNS4zNSAwIDEwLjQzOC0yLjcwNCAxMC40MzgtOS42NjcgMC03LjAzLTUuNjU1LTkuNDE3LTEwLjQzNy05LjQxN3ptMCAxNS44MTNjLTIuOTM4IDAtNi44MDYtMS4yNy02LjgwNi02LjM2IDAtNS4xNzIgNC4yOS02LjIyNCA2LjgwNi02LjIyNCAyLjUxNyAwIDYuODA2IDEuMDUyIDYuODA2IDYuMjI0LS4wMDIgNS4wOTItMy44NyA2LjM2LTYuODA3IDYuMzZ6Ii8+PHBhdGggZmlsbD0iI0VGN0QwMCIgZD0iTTEzMC40MjMgMjQuOTJjLS4xOTguMTMtLjQzNy4yOC0uNjU0LjQwNGwtLjA2OC4wNC4wNjcuMDA3YzQuMjcgMS4xNzQgOC40OTYgMS4xMyA5LjMxLTEuNTM2IDEuMDUtMy40NC01Ljc0My03LjEzLTguOTUtOC44OS0uNjg3LS4zNzYtLjk4NS0uMTQyLS41NDcuMzYzIDIuMDI0IDIuMzMyIDQuOTA3IDYuOTE4Ljg0IDkuNjE0eiIvPjxwYXRoIGZpbGw9IiNDRjAyMkIiIGQ9Ik0xMjkuNzA2IDI1LjM2cy01LjM3NyAzLjM4LTE0Ljg2OCAzLjM4Yy0zLjY3NyAwLTYuNzcyLS41NjItOC4wOC0xLjg1LTEuMzgtMS4zNTUtMi4xMjYtMy42NDItMi4xMjYtNS43NCAwLTEuOC43NDctMy4zMTMgMi4zMDUtMy4zMTMgNCAwIDE2LjQ2NiA2LjM0IDIyLjc3IDcuNTI0eiIvPjxwYXRoIGZpbGw9IiNFRjdEMDAiIGQ9Ik0xMTEuNzg1IDUuNzYzYy4xOTctLjEzLjQzNy0uMjguNjUzLS40MDRsLjA2Ni0uMDQtLjA2Ni0uMDA4Yy00LjI3LTEuMTcyLTguNS0xLjEyOC05LjMxMiAxLjUzNy0xLjA1IDMuNDQgNS43NDUgNy4xMyA4Ljk1IDguODkuNjkuMzc0Ljk4Ni4xNC41NS0uMzYzLTIuMDI1LTIuMzM0LTQuOTEtNi45Mi0uODQtOS42MTR6Ii8+PHBhdGggZmlsbD0iI0NGMDIyQiIgZD0iTTExMi41IDUuMzIyczUuMzgtMy4zOCAxNC44Ny0zLjM4YzMuNjc2IDAgNi43Ny41NjMgOC4wOCAxLjg1IDEuMzggMS4zNTggMi4xMjYgMy42NCAyLjEyNiA1Ljc0MiAwIDEuOC0uNzQ3IDMuMzEzLTIuMzA1IDMuMzEzLTQgMC0xNi40NjQtNi4zNC0yMi43Ny03LjUyNXoiLz48L3N2Zz4=">
     </h1>
-    <h2><%= product.name %></h2>
+    <h2>
+      <span><%= product.title %></span>
+      <% if (engagement?.version) { %>
+      <span class="tag" title="Application version"><%= engagement.version %></span>
+      <% } %>
+      <% if (engagement?.updated) { %>
+      <span class="tag" title="Last security debt update"><%= engagement.updated.substring(0, 10) %></span>
+      <% } %>
+    </h2>
     <div class="table-container">
       <table>
         <thead>
@@ -104,19 +125,19 @@
             <td><%= finding.date %></td>
             <td><%= engagement.version %></td>
             <td><%= finding.tool %></td>
-            <td><%= "" %></td>
+            <td></td>
             <td title="<%= finding.file_path %>"><%= finding.file_path %></td>
             <td title="<%= finding.title %>"><%= finding.title %></td>
             <td><%= finding.occurrences %></td>
             <td class="criticity c<%= finding.severity_index %>"><%= finding.severity %></td>
             <td class="criticity c<%= finding.ease_index %>"><%= finding.ease %></td>
             <td class="criticity c<%= finding.criticity_index %>"><%= finding.criticity %></td>
-            <td><%= "" %></td>
+            <td></td>
             <td><%= finding.display_status %></td>
-            <td><%= "" %></td>
-            <td><%= "" %></td>
+            <td></td>
+            <td></td>
             <td><%= finding.ssg_responsibility ? "Y" : "N" %></td>
-            <td><%= "" %></td>
+            <td></td>
             <td title="<%= finding.comment %>"><%= finding.comment %></td>
             <td title="<%= finding.mitigation %>"><%= finding.mitigation %></td>
           </tr>

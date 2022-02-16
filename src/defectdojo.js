@@ -19,7 +19,8 @@ export class DefectDojoApiClient {
    * @param {string} token Jeton d'authentification auprès de l'API V2
    */
   constructor(url, token) {
-    this.url = new URL("/api/v2", url).toString();
+    this.url = url.replace(/\/$/, "");
+    this.apiUrl = this.url + "/api/v2";
     this.options = { "headers": { "Authorization": `Token ${token}` } };
   }
 
@@ -32,13 +33,15 @@ export class DefectDojoApiClient {
   async getProduct(name) {
     console.log(`[info] Fetching product '${name}'`)
     try {
-      const response = await fetch(`${this.url}/products?name=${name}`, this.options);
+      const response = await fetch(`${this.apiUrl}/products?name=${name}`, this.options);
       const data = await response.json();
       if (data.count != 1) {
         console.error("[error] Expected to find a single product");
         process.exit(1);
       }
       const product = data.results[0];
+      product.title = product.description || product.name;
+      product.url = `${this.url}/product/${product.id}`;
       console.log(`[info] Product id = ${product.id}`);
       return product;
     } catch (error) {
@@ -57,13 +60,14 @@ export class DefectDojoApiClient {
   async getEngagement(productId, name) {
     console.log(`[info] Fetching engagement '${name}' for product id '${productId}'`);
     try {
-      const response = await fetch(`${this.url}/engagements?product=${productId}&name=${name}`, this.options);
+      const response = await fetch(`${this.apiUrl}/engagements?product=${productId}&name=${name}`, this.options);
       const data = await response.json();
       if (data.count != 1) {
         console.error("[error] Expected to find a single engagement");
         process.exit(1);
       }
       const engagement = data.results[0];
+      engagement.url = `${this.url}/engagement/${engagement.id}`;
       console.log(`[info] Engagement id = ${engagement.id}`);
       return engagement;
     } catch (error) {
@@ -83,7 +87,7 @@ export class DefectDojoApiClient {
     console.log(`[info] Fetching findings for engagement id '${engagementId}'`);
     try {
       const filters = statuses.map(s => s[0] !== "!" ? s + "=true" : s.slice(1) + "=false").join("&");
-      let findingsUrl = `${this.url}/findings?test__engagement=${engagementId}&limit=100&${filters}&related_fields=true`;
+      let findingsUrl = `${this.apiUrl}/findings?test__engagement=${engagementId}&limit=100&${filters}&related_fields=true`;
       const findings = [];
       let findingsPage = 0;
       while (findingsUrl && findingsPage < 20) {

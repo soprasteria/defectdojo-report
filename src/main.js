@@ -27,10 +27,10 @@ const args = parseArgs();
   const findings = await defectDojo.getFindings(engagement.id, args.statuses.split(","));
 
   /*
-   * Calcul des champs additionnels dont la criticité résultante
+   * Traitement des vulnérabilités
    */
 
-  console.log("[info] Computing additional fields");
+  console.log("[info] Processing findings");
 
   const impacts = ["informational", "low", "medium", "high", "critical"];
   const eases = ["undefined", "very hard", "hard", "moderate", "easy"];
@@ -41,6 +41,8 @@ const args = parseArgs();
     [2, 2, 3, 4], // medium  medium  high      critical
     [3, 3, 4, 4]  // high    high    critical  critical
   ];
+
+  // Calcul des champs additionnels dont la criticité résultante
   for (const finding of findings) {
     // Criticité résultante
     finding.severity = finding.severity?.toLowerCase();
@@ -52,12 +54,18 @@ const args = parseArgs();
     finding.criticity = criticities[finding.criticity_index];
     finding.severity_index = i;
     // Autres champs
-    finding.tool = finding.related_fields.test.test_type.name.replace(/Scan/g, "").trim();
+    finding.tool = finding.related_fields.test.title ||
+      finding.related_fields.test.test_type.name.replace(/Scan/g, "").trim();
     finding.occurrences = finding.nb_occurences || 1;
     finding.origin = finding.tags.find(t => /init(ial)?|run|alert|reversibility/.test(t)) ?? "";
     finding.ssg_responsibility = finding.tags.includes("ssg");
     finding.comment = finding.notes.join(" ");
   }
+
+  // Tri par criticity_index (desc), tool (asc), severity_index (desc), title (asc)
+  findings.sort((f1, f2) => (f2.criticity_index - f1.criticity_index) ||
+    f1.tool.localeCompare(f2.tool) || (f2.severity_index - f1.severity_index) ||
+    f1.title.localeCompare(f2.title));
 
   console.log("[info] Vulnerabilities:", criticities.map(c =>
     findings.filter(f => f.criticity == c).length + " " + c).join(", "));
