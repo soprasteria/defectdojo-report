@@ -77,17 +77,19 @@ export class DefectDojoApiClient {
   }
 
   /**
-   * Récupère la liste des vulnérabilités associées à un engagement donné.
+   * Récupère la liste des vulnérabilités associées à un ou plusieurs
+   * engagement(s) donné(s).
    *
-   * @param {string} engagementId Identifiant de l'engagement
+   * @param {string[]} engagements Identifiants des engagements
    * @param {string[]} statuses Statuts à filtrer
    * @returns Les vulnérabilités
    */
-  async getFindings(engagementId, statuses) {
-    console.log(`[info] Fetching findings for engagement id '${engagementId}'`);
+  async getFindings(engagements, statuses) {
+    console.log(`[info] Fetching findings for engagement(s) ${engagements.join(", ")}`);
     try {
       const filters = statuses.map(s => s[0] !== "!" ? s + "=true" : s.slice(1) + "=false").join("&");
-      let findingsUrl = `${this.apiUrl}/findings?test__engagement=${engagementId}&limit=100&${filters}&related_fields=true`;
+      let findingsUrl = `${this.apiUrl}/findings?test__engagement=${engagements.join(",")}`
+        + `&limit=100&${filters}&related_fields=true`;
       const findings = [];
       let findingsPage = 0;
       while (findingsUrl && findingsPage < 20) {

@@ -21,7 +21,8 @@
   "author": "Gaël Girodon <gael.girodon@soprasteria.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "ejs": "^3.1.6",
-    "node-fetch": "^3.2.0"
+    "ejs": "^3.1.8",
+    "jsonpath-plus": "^7.0.0",
+    "node-fetch": "^3.2.10"
   }
 }
