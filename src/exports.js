@@ -1,6 +1,6 @@
 /*
  * exports.js
- * Service d'exportation de la dette de sécurité en plusieurs formats.
+ * Security debt report export service
  */
 
 import { dirname, join } from "path";
@@ -10,14 +10,14 @@ import ejs from "ejs";
 import { resolveField } from "./config.js";
 
 /**
- * Exporte les vulnérabilités vers un fichier CSV.
+ * Export vulnerabilities to a CSV file.
  *
- * @param {Array} _products Produit(s) DefectDojo (non utilisé)
- * @param {Array} _engagements Engagement(s) DefectDojo (non utilisé)
- * @param {Array} findings Liste des vulnérabilités
- * @param {string} path Chemin vers le fichier CSV à créer
+ * @param {Array} _products DefectDojo products (unused)
+ * @param {Array} _engagements DefectDojo engagements (unused)
+ * @param {Array} findings Vulnerabilities
+ * @param {string} path Path to the CSV file to create
  * @param {*} config Configuration
- * @param {{separator: string}} options Options d'exportation CSV
+ * @param {{separator: string}} options CSV export options
  */
 export async function exportToCSV(_products, _engagements, findings, path, config, options) {
   const sep = options?.separator ?? ",";
@@ -31,20 +31,20 @@ export async function exportToCSV(_products, _engagements, findings, path, confi
 }
 
 /**
- * Exporte les vulnérabilités vers un fichier HTML.
+ * Export vulnerabilities to an HTML file.
  *
- * @param {Array} products Produit(s) DefectDojo
- * @param {Array} engagements Engagement(s) DefectDojo
- * @param {Array} findings Liste des vulnérabilités
- * @param {string} path Chemin vers le fichier HTML à créer
+ * @param {Array} products DefectDojo products
+ * @param {Array} engagements DefectDojo engagements
+ * @param {Array} findings Vulnerabilities
+ * @param {string} path Path to the HTML file to create
  * @param {*} config Configuration
  */
 export async function exportToHTML(products, engagements, findings, path, config) {
-  // Récupération du template
+  // Load the template
   const templateFile = join(dirname(fileURLToPath(import.meta.url)), "template.ejs");
   const template = await readFile(templateFile, { encoding: "utf8" });
 
-  // Exportation des vulnérabilités
+  // Export vulnerabilities
   const headers = Object.keys(config.fields);
   const findingsFields = findings.map(finding => Object.values(config.fields)
     .map(f => resolveField(finding, f)));
@@ -53,18 +53,18 @@ export async function exportToHTML(products, engagements, findings, path, config
     findings: findingsFields, headers
   });
 
-  // Écriture du fichier
+  // Write the output file
   await writeFile(path, html, { encoding: "utf8" });
 }
 
 /**
- * Exporte les vulnérabilités vers un fichier JSON.
+ * Export vulnerabilities to a JSON file.
  *
- * @param {Array} products Produit(s) DefectDojo
- * @param {Array} engagements Engagement(s) DefectDojo
- * @param {Array} findings Liste des vulnérabilités
- * @param {string} path Chemin vers le fichier JSON à créer
- * @param {*} _config Configuration (non utilisé)
+ * @param {Array} products DefectDojo products
+ * @param {Array} engagements DefectDojo engagements
+ * @param {Array} findings Vulnerabilities
+ * @param {string} path Path to the JSON file to create
+ * @param {*} _config Configuration (unused)
  */
 export async function exportToJSON(products, engagements, findings, path, _config) {
   const data = { products, engagements, findings };

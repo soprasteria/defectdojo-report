@@ -1,7 +1,7 @@
 {
-  "name": "dd-to-osdf",
-  "version": "1.0.0",
-  "description": "Outil permettant d'exporter la dette sécurité au format Orange depuis DefectDojo",
+  "name": "defectdojo-report",
+  "version": "0.1.0",
+  "description": "Export the security debt of an application from DefectDojo",
   "main": "./src/main.js",
   "bin": "./src/main.js",
   "type": "module",
@@ -10,19 +10,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://innersource.soprasteria.com/gael.girodon/dd-to-osdf.git"
+    "url": "https://github.com/soprasteria/defectdojo-report.git"
   },
   "keywords": [
     "security",
     "debt",
-    "orange",
     "defectdojo"
   ],
   "author": "Gaël Girodon <gael.girodon@soprasteria.com>",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "ejs": "^3.1.8",
-    "jsonpath-plus": "^7.0.0",
+    "jsonpath-plus": "^7.2.0",
     "node-fetch": "^3.2.10"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

@@ -1,22 +1,21 @@
 /*
  * defectdojo.js
- * Service d'interrogation de l'API V2 de DefectDojo.
+ * DefectDojo API V2 query service
  */
 
 import fetch from "node-fetch";
 
 /**
- * Client d'interrogation de l'API V2 de DefectDojo.
- * En cas d'erreur, toutes les méthodes journalisent un message d'erreur
- * et terminent le processus.
+ * DefectDojo API V2 query client.
+ * In case of error, methods log an error message and exit the process.
  */
 export class DefectDojoApiClient {
 
   /**
-   * Initialise un nouveau client d'interrogation de l'API V2 de DefectDojo.
+   * Initialise a new DefectDojo API V2 query client.
    *
-   * @param {string} url URL racine de l'instance
-   * @param {string} token Jeton d'authentification auprès de l'API V2
+   * @param {string} url Root URL of the DefectDojo instance
+   * @param {string} token Authentication key for the API V2
    */
   constructor(url, token) {
     this.url = url.replace(/\/$/, "");
@@ -25,10 +24,10 @@ export class DefectDojoApiClient {
   }
 
   /**
-   * Récupère un produit par nom.
+   * Fetch a product by name.
    *
-   * @param {string} name Nom du produit
-   * @returns Le produit
+   * @param {string} name product name
+   * @returns The product
    */
   async getProduct(name) {
     console.log(`[info] Fetching product '${name}'`)
@@ -51,11 +50,11 @@ export class DefectDojoApiClient {
   }
 
   /**
-   * Récupère un engagement par produit et par nom.
+   * Fetch an engagement by product and by name.
    *
-   * @param {string} productId Identifiant du produit
-   * @param {string} name Nom de l'engagement
-   * @returns L'engagement
+   * @param {string} productId Product id
+   * @param {string} name Engagement name
+   * @returns The engagement
    */
   async getEngagement(productId, name) {
     console.log(`[info] Fetching engagement '${name}' for product id '${productId}'`);
@@ -77,12 +76,11 @@ export class DefectDojoApiClient {
   }
 
   /**
-   * Récupère la liste des vulnérabilités associées à un ou plusieurs
-   * engagement(s) donné(s).
+   * Fetch vulnerabilities associated to one or multiple engagements.
    *
-   * @param {string[]} engagements Identifiants des engagements
-   * @param {string[]} statuses Statuts à filtrer
-   * @returns Les vulnérabilités
+   * @param {string[]} engagements Engagements ids
+   * @param {string[]} statuses Statuses to filter
+   * @returns Vulnerabilities
    */
   async getFindings(engagements, statuses) {
     console.log(`[info] Fetching findings for engagement(s) ${engagements.join(", ")}`);

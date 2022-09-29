@@ -1,39 +1,44 @@
-# _DefectDojo to Orange Security Debt Format_
+# DefectDojo Report
 
-Outil permettant d'exporter la dette sécurité d'une application depuis
-DefectDojo avec support de fonctionnalités additionnelles :
+[![Version](https://img.shields.io/github/package-json/v/soprasteria/defectdojo-report)](https://github.com/soprasteria/defectdojo-report/releases)
+[![License](https://img.shields.io/github/license/soprasteria/defectdojo-report)](./LICENSE)
+[![GitHub Actions Workflow status](https://github.com/soprasteria/defectdojo-report/actions/workflows/build.yml/badge.svg)](https://github.com/soprasteria/defectdojo-report/actions/workflows/build.yml)
+[![README - English](https://img.shields.io/badge/readme-%F0%9F%87%AC%F0%9F%87%A7-blue)](./README.md)
+[![README - French](https://img.shields.io/badge/readme-%F0%9F%87%AB%F0%9F%87%B7-blue)](./README_fr.md)
 
-- Calcul de la criticité résultante à partir de l'impact (`severity`), de la
-  facilité d'exploitation (définie via un _tag_) et d'une matrice de
-  correspondance
-- Gestion d'informations complémentaires définies via des _tags_ :
-  - Origine de l'audit
-  - Correction de la vulnérabilité à la charge du prestataire de service
-- Génération de rapports personnalisables aux formats HTML, CSV et JSON
-- Concaténation de la dette associée à plusieurs produits
+_DefectDojo Report_ is a tool made to export the security debt of an
+application from DefectDojo with support for additional features:
 
-## Utilisation
+- Calculation of the resultant criticity from the impact (`severity`), the
+  ease of exploitation (set using a _tag_) and a mapping matrix
+- Support for additional information provided using _tags_:
+  - Audit origin
+  - Vulnerability fix under the service provider responsibility
+- Generation of customizable reports in HTML, CSV and JSON formats
+- Aggregation of the debt associated to multiple products
 
-Installer Node.js >= 16 et NPM puis exécuter la commande suivante :
+## Usage
+
+Install Node.js >= 16 and NPM, then run the following command :
 
 ```bash
-npx --package git+https://oauth2:$TOKEN@innersource.soprasteria.com/gael.girodon/dd-to-osdf.git \
-  dd-to-osdf [options]
+npx --package git+https://github.com/soprasteria/defectdojo-report.git \
+  defectdojo-report [options]
 ```
 
-`dd-to-osdf --help` permet d'afficher le message d'aide.
+Run `defectdojo-report --help` to show the help message.
 
-Les options sont documentées ici : [`src/cli.js`](./src/cli.js#L38).
+Options are documented here: [`src/cli.js`](./src/cli.js#L38).
 
-## Exemple
+## Example
 
-La commande suivante permet d'exporter la dette de sécurité associée au
-produit `product-name` et à l'engagement `engagement-name` vers 2 fichiers
-(`./secdebt.csv` et `./secdebt.html`) en incluant uniquement les vulnérabilités
-actives et pas hors périmètre :
+The following command allows to export the security debt associated to the
+product `product-name` and the engagement `engagement-name` to 2 files
+(`./secdebt.csv` and `./secdebt.html`) including only active and not out of
+scope vulnerabilities:
 
 ```bash
-dd-to-osdf                                                 \
+defectdojo-report                                          \
   --url "https://defectdojo.acme.corp:8080"                \
   --token "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"       \
   --product "product-name" --engagement "engagement-name"  \
@@ -42,8 +47,8 @@ dd-to-osdf                                                 \
   --config "./config.json"
 ```
 
-Le fichier `config.json` (optionnel) permet de personnaliser la
-[configuration](src/config.js#L12) de l'outil, par exemple :
+The `config.json` file (optional) allows to customize the tool
+[configuration](src/config.js#L12), e.g. :
 
 ```json
 {
@@ -51,3 +56,7 @@ Le fichier `config.json` (optionnel) permet de personnaliser la
   "criticities": ["unknown", "low", "moderate", "high", "critical"]
 }
 ```
+
+## License
+
+_DefectDojo Report_ is licensed under the GNU General Public License.

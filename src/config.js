@@ -1,43 +1,43 @@
 /*
  * config.js
- * Service de gestion de la configuration de l'outil
+ * Tool configuration service
  */
 
 import { readFile } from "fs/promises";
 import { JSONPath } from "jsonpath-plus";
 
 /**
- * Configuration par défaut de l'outil
+ * Default tool configuration
  */
 const defaultConfig = {
-  // Étiquette DefectDojo indiquant que la correction de la vulnérabilité est à la charge du prestataire de service
+  // DefectDojo tag indicating that the vulnerability fix is under the service provider responsibility
   serviceProviderTag: "sp",
-  // Étiquettes DefectDojo indiquant la facilité d'exploitation (contextualisée) d'une vulnérabilité
+  // DefectDojo tags indicating the ease of exploitation (contextualised) of a vulnerability
   easeTags: ["e0", "e1", "e2", "e3", "e4"],
-  // Étiquettes DefectDojo indiquant l'origine de l'audit
+  // DefectDojo tags indicating the audit origin
   originTags: ["init", "initial", "run", "alert", "reversibility"],
-  // Niveaux d'impact / de sévérité (cf. champ "severity" de la vulnérabilité dans DefectDojo)
+  // Impact/severity levels (cf. "severity" field of the vulnerability in DefectDojo)
   impacts: ["informational", "low", "medium", "high", "critical"],
-  // Niveaux de facilité d'exploitation correspondant aux étiquettes
+  // Ease of exploitation levels associated to the tags
   eases: ["undefined", "very hard", "hard", "moderate", "easy"],
-  // Niveau de criticité résultante
+  // Resultant criticity levels
   criticities: ["undefined", "minor", "medium", "high", "critical"],
-  // Matrice permettant d'obtenir la criticité résultante à partir de l'impact (x) et de la facilité d'exploitation (y)
+  // Matrix allowing to get the resultant criticity from the impact (x) and the ease of exploitation (y)
   criticityMatrix: [
     [1, 1, 2, 2], // minor   minor   medium    medium
     [1, 2, 3, 3], // minor   medium  high      high
     [2, 2, 3, 4], // medium  medium  high      critical
     [3, 3, 4, 4]  // high    high    critical  critical
   ],
-  // Titre du rapport HTML
+  // HTML report title
   title: "Security Debt",
-  // Logo à utiliser dans le rapport HTML (URL ou data:image/{type};base64,{base64})
+  // Logo to display in the HTML report (URL or data:image/{type};base64,{base64})
   logo: null,
-  // Couleur principale utilisée dans le rapport HTML
+  // Primary color used in the HTML report
   primaryColor: "#d31900",
-  // Couleurs utilisées pour les différents niveaux d'impact, de facilité d'exploitation et de criticité
+  // Colors associated to each impact, ease of exploitation and criticity level
   criticityColors: ["#eeeeee", "#ffd740", "#ff9c40", "#ff5252", "#b870ff"],
-  // Champs ("header": "JSONPath")
+  // Report fields ("header": "JSONPath")
   fields: {
     "Application": "$.product.name", // Application name or id
     "Audit origin": "$.origin", // Initial, Run, Alert, Reversibility
@@ -63,18 +63,17 @@ const defaultConfig = {
 };
 
 /**
- * Charge et valide la configuration de l'outil.
+ * Load and validate the tool configuration.
  *
- * @param {string} path Chemin vers le fichier JSON de personnalisation
- * de la configuration
- * @returns {*} La configuration de l'outil
+ * @param {string} path Path to the configuration customisation JSON file
+ * @returns {*} The tool configuration
  */
 export async function loadConfig(path) {
   const config = Object.assign({}, defaultConfig);
   if (!path) {
     return config
   }
-  // Chargement de la configuration personnalisée
+  // Load the custom configuration
   console.log("[info] Loading custom configuration");
   let cc;
   try {
@@ -83,7 +82,7 @@ export async function loadConfig(path) {
     console.error(`[error] Unable to load or parse configuration from '${path}' (${error})`);
     process.exit(1);
   }
-  // Validation des propriétés
+  // Validate properties
   for (const prop of ["easeTags", "originTags", "impacts",
     "eases", "criticities", "criticityColors"]) {
     if (prop in cc && (!Array.isArray(cc[prop]) || cc[prop]?.length !== 5)) {
@@ -101,18 +100,17 @@ export async function loadConfig(path) {
 }
 
 /**
- * Récupère le champ ciblé par le chemin fourni dans les données
- * de la vulnérabilité.
+ * Get the field at the given path in the vulnerability data.
  *
- * @param {*} finding Données de la vulnérabilité
- * @param {string} path Chemin vers le champ à récupérer (JSONPath ou champ spécial)
- * @returns {{value: string, type: string, index?: number}} Valeur, type et éventuel index
+ * @param {*} finding Vulnerability data
+ * @param {string} path Path to the field to get (JSONPath ou special field)
+ * @returns {{value: string, type: string, index?: number}} Value, type and index
  */
 export function resolveField(finding, path) {
   if (!path) {
     return { value: "", type: "string" };
   }
-  // Champs spéciaux
+  // Special fields
   if (["severity", "ease", "criticity"].some(f => path === f.toUpperCase())) {
     const f = path.toLowerCase();
     return { value: finding[f], type: "criticity", index: finding[`${f}_index`] };
@@ -124,7 +122,7 @@ export function resolveField(finding, path) {
   if (typeof value == "object") value = value?.toString() ?? "";
   if (typeof value == "string") value = value?.trim();
   let type = "string";
-  // Gestion des booléens
+  // Boolean handling
   if (typeof value == "boolean" || value === "true" || value === "false") {
     type = "boolean";
     value = value === true || value == "true" ? true : false;

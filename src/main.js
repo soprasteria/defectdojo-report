@@ -2,7 +2,7 @@
 
 /*
  * main.js
- * Exporte la dette sécurité au format Orange depuis DefectDojo.
+ * Export a security debt from DefectDojo.
  */
 
 import { join } from "path";
@@ -11,19 +11,19 @@ import { parseArgs } from "./cli.js";
 import { loadConfig } from "./config.js";
 import * as exporters from "./exports.js";
 
-// Récupération des arguments passés au programme
-const args = parseArgs();
+// Parse command-line arguments
+const opts = parseArgs();
 
 (async function () {
 
-  // Récupération de la configuration
-  const config = await loadConfig(args.config);
+  // Load configuration
+  const config = await loadConfig(opts.config);
 
-  // Initialisation du client pour l'API DefectDojo
-  const defectDojo = new DefectDojoApiClient(args.url, args.token);
+  // Initialise the DefectDojo API client
+  const defectDojo = new DefectDojoApiClient(opts.url, opts.token);
 
-  // Récupération des produits
-  const products = await args.product
+  // Fetch products
+  const products = await opts.product
     .sort((p1, p2) => p1.localeCompare(p2))
     .reduce(async (prevResults, p) => {
       const results = await prevResults;
@@ -31,19 +31,19 @@ const args = parseArgs();
       return [...results, product];
     }, []);
 
-  // Récupération des engagements
+  // Fetch engagements
   const engagements = await products.reduce(async (prevResults, p) => {
     const results = await prevResults;
-    const engagement = await defectDojo.getEngagement(p.id, args.engagement);
+    const engagement = await defectDojo.getEngagement(p.id, opts.engagement);
     return [...results, engagement];
   }, []);
 
-  // Récupération des vulnérabilités
+  // Fetch vulnerabilities
   const findings = await defectDojo.getFindings(engagements.map(e => e.id),
-    args.status);
+    opts.status);
 
   /*
-   * Traitement des vulnérabilités
+   * Process vulnerabilities
    */
 
   console.log("[info] Processing findings");
@@ -51,9 +51,9 @@ const args = parseArgs();
   const { impacts, eases, easeTags, criticities,
     criticityMatrix, originTags, serviceProviderTag } = config;
 
-  // Calcul des champs additionnels dont la criticité résultante
+  // Compute additional fields
   for (const finding of findings) {
-    // Criticité résultante
+    // Resultant criticity
     finding.severity = finding.severity?.toLowerCase();
     const i = Math.max(impacts.findIndex(i => i == finding.severity), 0);
     const e = easeTags.indexOf(finding.tags?.find(t => easeTags.includes(t)) ?? easeTags[0]);
@@ -62,7 +62,7 @@ const args = parseArgs();
     finding.criticity_index = e * i > 0 ? criticityMatrix[e - 1][i - 1] : 0;
     finding.criticity = criticities[finding.criticity_index];
     finding.severity_index = i;
-    // Autres champs
+    // Other fields
     finding.product = finding?.related_fields?.test?.engagement?.product ?? { id: -1, name: "" };
     finding.engagement = finding?.related_fields?.test?.engagement ?? { id: -1, name: "", version: "" };
     finding.tool = finding.related_fields.test.title ||
@@ -73,7 +73,7 @@ const args = parseArgs();
     finding.comment = finding.notes.join(" ");
   }
 
-  // Tri par product.name (asc), criticity_index (desc), tool (asc),
+  // Sort by product.name (asc), criticity_index (desc), tool (asc),
   // severity_index (desc), title (asc)
   findings.sort((f1, f2) => f1.product.name.localeCompare(f2.product.name) ||
     (f2.criticity_index - f1.criticity_index) || f1.tool.localeCompare(f2.tool) ||
@@ -83,17 +83,16 @@ const args = parseArgs();
     findings.filter(f => f.criticity == c).length + " " + c).join(", "));
 
   /*
-   * Exportation
+   * Generate reports
    */
 
   const defaultReportName = "Security-Debt" + (products.length == 1 ? `_${products[0].name}` : "");
-  const path = args.output ?? join(process.cwd(), defaultReportName);
-  const opts = { separator: ";" };
+  const path = opts.output ?? join(process.cwd(), defaultReportName);
 
-  for (const format of args.format) {
+  for (const format of opts.format) {
     console.log(`[info] Exporting to ${format.toUpperCase()}:`, path + "." + format);
     await exporters["exportTo" + format.toUpperCase()](products, engagements,
-      findings, path + "." + format, config, opts);
+      findings, path + "." + format, config, { separator: ";" });
   }
 
 })();
