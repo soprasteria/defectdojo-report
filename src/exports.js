@@ -12,9 +12,9 @@ import { resolveField } from "./config.js";
 /**
  * Export vulnerabilities to a CSV file.
  *
- * @param {Array} _products DefectDojo products (unused)
- * @param {Array} _engagements DefectDojo engagements (unused)
- * @param {Array} findings Vulnerabilities
+ * @param {Array<*>} _products DefectDojo products (unused)
+ * @param {Array<*>} _engagements DefectDojo engagements (unused)
+ * @param {Array<*>} findings Vulnerabilities
  * @param {string} path Path to the CSV file to create
  * @param {*} config Configuration
  * @param {{separator: string}} options CSV export options
@@ -33,9 +33,9 @@ export async function exportToCSV(_products, _engagements, findings, path, confi
 /**
  * Export vulnerabilities to an HTML file.
  *
- * @param {Array} products DefectDojo products
- * @param {Array} engagements DefectDojo engagements
- * @param {Array} findings Vulnerabilities
+ * @param {Array<*>} products DefectDojo products
+ * @param {Array<*>} engagements DefectDojo engagements
+ * @param {Array<*>} findings Vulnerabilities
  * @param {string} path Path to the HTML file to create
  * @param {*} config Configuration
  */
@@ -60,13 +60,12 @@ export async function exportToHTML(products, engagements, findings, path, config
 /**
  * Export vulnerabilities to a JSON file.
  *
- * @param {Array} products DefectDojo products
- * @param {Array} engagements DefectDojo engagements
- * @param {Array} findings Vulnerabilities
+ * @param {Array<*>} products DefectDojo products
+ * @param {Array<*>} engagements DefectDojo engagements
+ * @param {Array<*>} findings Vulnerabilities
  * @param {string} path Path to the JSON file to create
- * @param {*} _config Configuration (unused)
  */
-export async function exportToJSON(products, engagements, findings, path, _config) {
+export async function exportToJSON(products, engagements, findings, path) {
   const data = { products, engagements, findings };
   await writeFile(path, JSON.stringify(data), { encoding: "utf8" });
 }

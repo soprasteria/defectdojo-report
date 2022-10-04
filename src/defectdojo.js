@@ -7,7 +7,6 @@ import fetch from "node-fetch";
 
 /**
  * DefectDojo API V2 query client.
- * In case of error, methods log an error message and exit the process.
  */
 export class DefectDojoApiClient {
 
@@ -28,15 +27,15 @@ export class DefectDojoApiClient {
    *
    * @param {string} name product name
    * @returns The product
+   * @throws Request error
    */
   async getProduct(name) {
     console.log(`[info] Fetching product '${name}'`)
     try {
       const response = await fetch(`${this.apiUrl}/products?name=${name}`, this.options);
       const data = await response.json();
-      if (data.count != 1) {
-        console.error("[error] Expected to find a single product");
-        process.exit(1);
+      if (data?.count !== 1) {
+        throw new Error("expected to find a single product");
       }
       const product = data.results[0];
       product.title = product.description || product.name;
@@ -44,8 +43,7 @@ export class DefectDojoApiClient {
       console.log(`[info] Product id = ${product.id}`);
       return product;
     } catch (error) {
-      console.error("[error] An error occurred fetching products:", error);
-      process.exit(1);
+      throw new Error(`An error occurred fetching products: ${error?.message ?? error}`);
     }
   }
 
@@ -55,23 +53,22 @@ export class DefectDojoApiClient {
    * @param {string} productId Product id
    * @param {string} name Engagement name
    * @returns The engagement
+   * @throws Request error
    */
   async getEngagement(productId, name) {
     console.log(`[info] Fetching engagement '${name}' for product id '${productId}'`);
     try {
       const response = await fetch(`${this.apiUrl}/engagements?product=${productId}&name=${name}`, this.options);
       const data = await response.json();
-      if (data.count != 1) {
-        console.error("[error] Expected to find a single engagement");
-        process.exit(1);
+      if (data?.count !== 1) {
+        throw new Error("expected to find a single engagement");
       }
       const engagement = data.results[0];
       engagement.url = `${this.url}/engagement/${engagement.id}`;
       console.log(`[info] Engagement id = ${engagement.id}`);
       return engagement;
     } catch (error) {
-      console.error("[error] An error occurred fetching engagements:", error);
-      process.exit(1);
+      throw new Error(`An error occurred fetching engagements: ${error?.message ?? error}`);
     }
   }
 
@@ -81,6 +78,7 @@ export class DefectDojoApiClient {
    * @param {string[]} engagements Engagements ids
    * @param {string[]} statuses Statuses to filter
    * @returns Vulnerabilities
+   * @throws Request error
    */
   async getFindings(engagements, statuses) {
     console.log(`[info] Fetching findings for engagement(s) ${engagements.join(", ")}`);
@@ -101,8 +99,7 @@ export class DefectDojoApiClient {
       console.log(`[info] Findings count = ${findings.length}`);
       return findings;
     } catch (error) {
-      console.error("[error] An error occurred fetching findings:", error);
-      process.exit(1);
+      throw new Error(`An error occurred fetching findings: ${error?.message ?? error}`);
     }
   }
 

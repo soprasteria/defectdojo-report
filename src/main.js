@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /*
  * main.js
  * Export a security debt from DefectDojo.
@@ -11,13 +9,14 @@ import { parseArgs } from "./cli.js";
 import { loadConfig } from "./config.js";
 import * as exporters from "./exports.js";
 
-// Parse command-line arguments
-const opts = parseArgs();
-
-(async function () {
+export async function main() {
+  // Parse command-line arguments
+  const opts = await parseArgs()
+    .catch((e) => process.exit(e.exitCode));
 
   // Load configuration
-  const config = await loadConfig(opts.config);
+  const config = await loadConfig(opts.config)
+    .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
 
   // Initialise the DefectDojo API client
   const defectDojo = new DefectDojoApiClient(opts.url, opts.token);
@@ -27,20 +26,23 @@ const opts = parseArgs();
     .sort((p1, p2) => p1.localeCompare(p2))
     .reduce(async (prevResults, p) => {
       const results = await prevResults;
-      const product = await defectDojo.getProduct(p);
+      const product = await defectDojo.getProduct(p)
+        .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
       return [...results, product];
     }, []);
 
   // Fetch engagements
   const engagements = await products.reduce(async (prevResults, p) => {
     const results = await prevResults;
-    const engagement = await defectDojo.getEngagement(p.id, opts.engagement);
+    const engagement = await defectDojo.getEngagement(p.id, opts.engagement)
+      .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
     return [...results, engagement];
   }, []);
 
   // Fetch vulnerabilities
-  const findings = await defectDojo.getFindings(engagements.map(e => e.id),
-    opts.status);
+  const findings = await defectDojo
+    .getFindings(engagements.map(e => e.id), opts.status)
+    .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
 
   /*
    * Process vulnerabilities
@@ -94,5 +96,4 @@ const opts = parseArgs();
     await exporters["exportTo" + format.toUpperCase()](products, engagements,
       findings, path + "." + format, config, { separator: ";" });
   }
-
-})();
+}

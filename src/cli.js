@@ -3,7 +3,8 @@
  * CLI and environment handling service
  */
 
-import { existsSync, readFileSync } from "fs";
+import { existsSync } from "fs";
+import { readFile } from "fs/promises";
 
 /**
  * Statuses expected for the "status" CLI option
@@ -32,14 +33,14 @@ const expectedOptions = [
     name: "product",
     env: "DEFECTDOJO_PRODUCT",
     description: "Product name(s) on DefectDojo, comma separated",
-    pattern: /^([\w-\/.]+(,|$))+$/,
+    pattern: /^([\w/.-]+(,|$))+$/,
     csv: true
   },
   {
     name: "engagement",
     env: "DEFECTDOJO_ENGAGEMENT",
     description: "Engagement name on DefectDojo",
-    pattern: /^[\w-\/.]+$/
+    pattern: /^[\w/.-]+$/
   },
   {
     name: "status",
@@ -78,12 +79,13 @@ const expectedOptions = [
  * Extract and validate provided arguments
  * using the command line or environment variables.
  *
- * @returns Program options
+ * @returns {Promise<*>} Program options
+ * @throws {CliError} When the program must exit.
  */
-export function parseArgs() {
+export async function parseArgs() {
   // Read package metadata from package.json
   const npmPackageUrl = new URL("../package.json", import.meta.url);
-  const npmPackage = JSON.parse(readFileSync(npmPackageUrl, { encoding: "utf8" }));
+  const npmPackage = JSON.parse(await readFile(npmPackageUrl, { encoding: "utf8" }));
 
   // Show the help message
   if (process.argv.some(a => a.match(/^--?h(elp)?$/))) {
@@ -95,13 +97,13 @@ export function parseArgs() {
         .map(a => `  --${a.name.padEnd(11)} ${a.env.padEnd(22)} ${a.description}`)
         .join("\n")
       + "\n  -h, --help                           Show the help message");
-    process.exit(0);
+    throw new CliError(0);
   }
 
   // Show the version number
   if (process.argv.some(a => a.match(/^--?v(ersion)?$/))) {
     console.log(npmPackage.version);
-    process.exit(0);
+    throw new CliError(0);
   }
 
   const opts = {};
@@ -121,15 +123,15 @@ export function parseArgs() {
     // Validate the value
     if (!value && opt.default === undefined) {
       console.error(`[error] Argument '${opt.name}' is required`);
-      process.exit(1);
+      throw new CliError(1);
     } else if (value && !(new RegExp(opt.pattern)).test(value)) {
       console.error(`[error] Invalid argument '${opt.name}'`);
-      process.exit(1);
+      throw new CliError(1);
     }
     // Validate the file path
     if (value && opt.file && !existsSync(value)) {
       console.error(`[error] Argument '${opt.name}' must be a path to an existing file`);
-      process.exit(1);
+      throw new CliError(1);
     }
     // Take the default value into account
     value = value || opt.default;
@@ -141,4 +143,23 @@ export function parseArgs() {
   }
 
   return opts;
+}
+
+/**
+ * An error thrown during arguments parsing.
+ */
+export class CliError extends Error {
+
+  /**
+   * Initialize a CLI error.
+   *
+   * @param {number} exitCode Process exit code
+   * @param {string} message Error message
+   * @param  {...any} args Other arguments
+   */
+  constructor(exitCode = 1, message = "", ...args) {
+    super(message, ...args);
+    this.exitCode = exitCode;
+  }
+
 }

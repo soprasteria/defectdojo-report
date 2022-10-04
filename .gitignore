@@ -3,7 +3,6 @@
 #
 
 node_modules/
-*.csv
-*.html
-*.json
-!package*.json
+tmp/
+coverage/
+test-results.xml

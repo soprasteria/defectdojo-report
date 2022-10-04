@@ -66,7 +66,8 @@ const defaultConfig = {
  * Load and validate the tool configuration.
  *
  * @param {string} path Path to the configuration customisation JSON file
- * @returns {*} The tool configuration
+ * @returns {Promise<*>} The tool configuration
+ * @throws Invalid configuration
  */
 export async function loadConfig(path) {
   const config = Object.assign({}, defaultConfig);
@@ -79,22 +80,19 @@ export async function loadConfig(path) {
   try {
     cc = JSON.parse(await readFile(path, { encoding: "utf8" }));
   } catch (error) {
-    console.error(`[error] Unable to load or parse configuration from '${path}' (${error})`);
-    process.exit(1);
+    throw new Error(`Unable to load or parse configuration from '${path}' (${error?.message ?? error})`);
   }
   // Validate properties
   for (const prop of ["easeTags", "originTags", "impacts",
     "eases", "criticities", "criticityColors"]) {
     if (prop in cc && (!Array.isArray(cc[prop]) || cc[prop]?.length !== 5)) {
-      console.error(`[error] Configuration property '${prop}' is invalid`);
-      process.exit(1);
+      throw new Error(`Configuration property '${prop}' is invalid`);
     }
   }
   if ("criticityMatrix" in cc && cc.criticityMatrix && (!Array.isArray(cc.criticityMatrix) ||
     cc.criticityMatrix.length !== 4 || cc.criticityMatrix.some(row => !Array.isArray(row) ||
       row.length !== 4 || row.some(col => !Number.isFinite(col) || col < 0 || col > 4)))) {
-    console.error(`[error] Configuration property 'criticityMatrix' is invalid`);
-    process.exit(1);
+    throw new Error("Configuration property 'criticityMatrix' is invalid");
   }
   return Object.assign(config, cc);
 }
@@ -116,7 +114,7 @@ export function resolveField(finding, path) {
     return { value: finding[f], type: "criticity", index: finding[`${f}_index`] };
   }
   // JSONPath
-  let value = JSONPath(path, finding);
+  let value = JSONPath({ path, json: finding });
   // Normalisation
   if (Array.isArray(value)) value = value[0];
   if (typeof value == "object") value = value?.toString() ?? "";

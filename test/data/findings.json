@@ -1,0 +1,355 @@
+[
+  {
+    "id": 84,
+    "tags": [
+      "e4",
+      "run"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 8,
+        "test_type": {
+          "id": 117,
+          "name": "SonarQube Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "severity": "High",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "nb_occurences": 1,
+    "notes": []
+  },
+  {
+    "id": 75,
+    "tags": [
+      "e3",
+      "run"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 8,
+        "test_type": {
+          "id": 117,
+          "name": "SonarQube Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "severity": "High",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "nb_occurences": 3,
+    "notes": []
+  },
+  {
+    "id": 76,
+    "tags": [
+      "e4",
+      "run"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 8,
+        "test_type": {
+          "id": 117,
+          "name": "SonarQube Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "severity": "High",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "nb_occurences": 3,
+    "notes": []
+  },
+  {
+    "id": 77,
+    "tags": [
+      "e3",
+      "run"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 8,
+        "test_type": {
+          "id": 117,
+          "name": "SonarQube Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "severity": "High",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "nb_occurences": 3,
+    "notes": []
+  },
+  {
+    "id": 78,
+    "tags": [
+      "e1",
+      "run"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 8,
+        "test_type": {
+          "id": 117,
+          "name": "SonarQube Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "severity": "High",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "nb_occurences": 1,
+    "notes": []
+  },
+  {
+    "id": 74,
+    "tags": [
+      "e2",
+      "run"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 7,
+        "test_type": {
+          "id": 48,
+          "name": "Dependency Check Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "cve": "CVE-2021-22569",
+    "severity": "Medium",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "component_name": "component-java",
+    "component_version": "x.y.4",
+    "notes": [],
+    "found_by": [
+      48
+    ]
+  },
+  {
+    "id": 73,
+    "tags": [
+      "e2",
+      "run"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 7,
+        "test_type": {
+          "id": 48,
+          "name": "Dependency Check Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "cve": "CVE-2020-15522",
+    "severity": "Medium",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "component_name": "component",
+    "component_version": "x.y",
+    "notes": [],
+    "found_by": [
+      48
+    ]
+  },
+  {
+    "id": 85,
+    "tags": [
+      "e1",
+      "run",
+      "provider"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 8,
+        "test_type": {
+          "id": 117,
+          "name": "SonarQube Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "severity": "Low",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "nb_occurences": 1,
+    "notes": []
+  },
+  {
+    "id": 86,
+    "tags": [
+      "e1",
+      "run",
+      "provider"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 8,
+        "test_type": {
+          "id": 117,
+          "name": "SonarQube Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "severity": "Low",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "nb_occurences": 1,
+    "notes": []
+  },
+  {
+    "id": 87,
+    "tags": [
+      "e1",
+      "run",
+      "provider"
+    ],
+    "related_fields": {
+      "test": {
+        "id": 8,
+        "test_type": {
+          "id": 117,
+          "name": "SonarQube Scan"
+        },
+        "engagement": {
+          "id": 1,
+          "name": "main",
+          "product": {
+            "id": 1,
+            "name": "product"
+          },
+          "version": "1.0.0"
+        },
+        "version": "1.0.0"
+      }
+    },
+    "display_status": "Active, Verified",
+    "title": "Fake finding title",
+    "date": "YYYY-MM-DD",
+    "severity": "Low",
+    "mitigation": "Fake mitigation",
+    "file_path": "path/to/file",
+    "nb_occurences": 1,
+    "notes": []
+  }
+]
