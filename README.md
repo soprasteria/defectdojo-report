@@ -30,6 +30,9 @@ Run `defectdojo-report --help` to show the help message.
 
 Options are documented here: [`src/cli.js`](./src/cli.js#L15).
 
+A proxy can be configured using the conventional `http_proxy`, `https_proxy`
+and `no_proxy` environment variables.
+
 ## Example
 
 The following command allows to export the security debt associated to the

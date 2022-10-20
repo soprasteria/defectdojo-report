@@ -3,7 +3,7 @@
  * DefectDojo API V2 query service
  */
 
-import fetch from "node-fetch";
+import axios from "axios";
 
 /**
  * DefectDojo API V2 query client.
@@ -32,8 +32,8 @@ export class DefectDojoApiClient {
   async getProduct(name) {
     console.log(`[info] Fetching product '${name}'`)
     try {
-      const response = await fetch(`${this.apiUrl}/products?name=${name}`, this.options);
-      const data = await response.json();
+      const response = await axios.get(`${this.apiUrl}/products?name=${name}`, this.options);
+      const data = response.data;
       if (data?.count !== 1) {
         throw new Error("expected to find a single product");
       }
@@ -58,8 +58,8 @@ export class DefectDojoApiClient {
   async getEngagement(productId, name) {
     console.log(`[info] Fetching engagement '${name}' for product id '${productId}'`);
     try {
-      const response = await fetch(`${this.apiUrl}/engagements?product=${productId}&name=${name}`, this.options);
-      const data = await response.json();
+      const response = await axios.get(`${this.apiUrl}/engagements?product=${productId}&name=${name}`, this.options);
+      const data = response.data;
       if (data?.count !== 1) {
         throw new Error("expected to find a single engagement");
       }
@@ -90,8 +90,8 @@ export class DefectDojoApiClient {
       let findingsPage = 0;
       while (findingsUrl && findingsPage < 20) {
         console.log(`[info] Fetching findings (page ${findingsPage}): ${findingsUrl}`);
-        let findingsResponse = await fetch(findingsUrl, this.options);
-        let findingsData = await findingsResponse.json();
+        let findingsResponse = await axios.get(findingsUrl, this.options);
+        let findingsData = findingsResponse.data;
         findings.push(...findingsData.results);
         findingsUrl = findingsData.next;
         findingsPage++;

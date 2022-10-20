@@ -32,6 +32,9 @@ npx --package git+https://github.com/soprasteria/defectdojo-report.git \
 
 Les options sont documentées ici : [`src/cli.js`](./src/cli.js#L38).
 
+Un proxy peut être configuré en utilisant les variables d'environnement
+`http_proxy`, `https_proxy` et `no_proxy` habituelles.
+
 ## Exemple
 
 La commande suivante permet d'exporter la dette de sécurité associée au
