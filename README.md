@@ -19,11 +19,11 @@ application from DefectDojo with support for additional features:
 
 ## Usage
 
-Install Node.js >= 16 and NPM, then run the following command :
+Install Node.js >= 16 and NPM, then run the following commands :
 
 ```bash
-npx --package git+https://github.com/soprasteria/defectdojo-report.git \
-  defectdojo-report [options]
+npm i -g git+https://github.com/soprasteria/defectdojo-report.git
+defectdojo-report [options]
 ```
 
 Run `defectdojo-report --help` to show the help message.

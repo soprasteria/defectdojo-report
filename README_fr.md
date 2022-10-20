@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/github/package-json/v/soprasteria/defectdojo-report)](https://github.com/soprasteria/defectdojo-report/releases)
 [![License](https://img.shields.io/github/license/soprasteria/defectdojo-report)](./LICENSE)
-[![GitHub Actions Workflow status](https://github.com/soprasteria/defectdojo-report/actions/workflows/build.yml/badge.svg)](https://github.com/soprasteria/defectdojo-report/actions/workflows/build.yml)
+[![GitHub Actions Workflow status](https://github.com/soprasteria/defectdojo-report/actions/workflows/test.yml/badge.svg)](https://github.com/soprasteria/defectdojo-report/actions/workflows/test.yml)
 [![README - English](https://img.shields.io/badge/readme-%F0%9F%87%AC%F0%9F%87%A7-blue)](./README.md)
 [![README - French](https://img.shields.io/badge/readme-%F0%9F%87%AB%F0%9F%87%B7-blue)](./README_fr.md)
 
@@ -21,11 +21,11 @@ additionnelles :
 
 ## Utilisation
 
-Installer Node.js >= 16 et NPM puis exécuter la commande suivante :
+Installer Node.js >= 16 et NPM puis exécuter les commandes suivantes :
 
 ```bash
-npx --package git+https://github.com/soprasteria/defectdojo-report.git \
-  defectdojo-report [options]
+npm i -g git+https://github.com/soprasteria/defectdojo-report.git
+defectdojo-report [options]
 ```
 
 `defectdojo-report --help` permet d'afficher le message d'aide.
