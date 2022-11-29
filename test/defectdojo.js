@@ -21,7 +21,7 @@ describe("DefectDojoApiClient", function () {
   describe("#getEngagement()", function () {
     it("should return a single engagement", async function () {
       let engagement;
-      await assert.doesNotReject(async () => engagement = await client.getEngagement("main"));
+      await assert.doesNotReject(async () => engagement = await client.getEngagement(1, "main"));
       assert.strictEqual(engagement.id, 1);
       assert.strictEqual(engagement.url, "http://localhost:8888/engagement/1");
     });

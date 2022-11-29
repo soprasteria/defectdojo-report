@@ -15,32 +15,28 @@ const findings = JSON.parse(readFileSync(
   { encoding: "utf8" })
 );
 
+// Authentication stub
+app.use((req, res, next) => {
+  if (!req.headers.authorization) {
+    return res.status(401).send("Unauthorized");
+  }
+  next();
+});
+
 // GET /api/v2/products should return a single test product.
 app.get("/api/v2/products", (req, res) => {
-  if (req.query.name === "unknown") {
-    res.json({ count: 0, results: [] });
-    return;
-  }
-  res.json({
-    count: 1,
-    results: [
-      { id: 1, name: "product", description: "Product description" }
-    ]
-  });
+  const results = [
+    { id: 1, name: "product", description: "Product description" }
+  ].filter(p => !req.params.name || p.name.includes(req.params.name));
+  res.json({ count: results.length, results });
 });
 
 // GET /api/v2/engagements should return a single test engagement.
 app.get("/api/v2/engagements", (req, res) => {
-  if (req.query.name === "unknown") {
-    res.json({ count: 0, results: [] });
-    return;
-  }
-  res.json({
-    count: 1,
-    results: [
-      { id: 1, name: "main" }
-    ]
-  });
+  const results = [
+    { id: 1, name: "main" }
+  ].filter(e => !req.params.name || e.name.includes(req.params.name));
+  res.json({ count: results.length, results });
 });
 
 // GET /api/v2/engagements should return some test findings.
@@ -50,7 +46,7 @@ app.get("/api/v2/findings", (req, res) => {
     return;
   }
   res.json({
-    count: 1,
+    count: findings.length,
     results: findings
   });
 });
