@@ -21,7 +21,7 @@ additionnelles :
 
 ## Utilisation
 
-Installer Node.js >= 16 et NPM puis exécuter les commandes suivantes :
+Installer Node.js >= 18 et NPM puis exécuter les commandes suivantes :
 
 ```bash
 npm i -g git+https://github.com/soprasteria/defectdojo-report.git

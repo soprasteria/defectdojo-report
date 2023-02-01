@@ -19,7 +19,7 @@ application from DefectDojo with support for additional features:
 
 ## Usage
 
-Install Node.js >= 16 and NPM, then run the following commands :
+Install Node.js >= 18 and NPM, then run the following commands:
 
 ```bash
 npm i -g git+https://github.com/soprasteria/defectdojo-report.git
