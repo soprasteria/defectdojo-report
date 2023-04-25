@@ -1,7 +1,8 @@
 # DefectDojo Report
 
-[![Version](https://img.shields.io/github/package-json/v/soprasteria/defectdojo-report)](https://github.com/soprasteria/defectdojo-report/releases)
-[![License](https://img.shields.io/github/license/soprasteria/defectdojo-report)](./LICENSE)
+[![Version](https://img.shields.io/npm/v/defectdojo-report)](https://www.npmjs.com/package/defectdojo-report)
+[![License](https://img.shields.io/npm/l/defectdojo-report)](./LICENSE)
+[![Node.js](https://img.shields.io/node/v/defectdojo-report)](https://nodejs.org/download/)
 [![GitHub Actions Workflow status](https://github.com/soprasteria/defectdojo-report/actions/workflows/test.yml/badge.svg)](https://github.com/soprasteria/defectdojo-report/actions/workflows/test.yml)
 [![README - English](https://img.shields.io/badge/readme-%F0%9F%87%AC%F0%9F%87%A7-blue)](./README.md)
 [![README - French](https://img.shields.io/badge/readme-%F0%9F%87%AB%F0%9F%87%B7-blue)](./README_fr.md)
