@@ -2,7 +2,8 @@
 # .gitignore
 #
 
+coverage/
 node_modules/
 tmp/
-coverage/
+*.tgz
 test-results.xml

@@ -96,7 +96,8 @@ export async function parseArgs() {
       + expectedOptions
         .map(a => `  --${a.name.padEnd(11)} ${a.env.padEnd(22)} ${a.description}`)
         .join("\n")
-      + "\n  -h, --help                           Show the help message");
+      + "\n  -h, --help                           Show the help message"
+      + "\n  -v, --version                        Show the version number");
     throw new CliError(0);
   }
 

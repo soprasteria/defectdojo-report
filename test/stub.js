@@ -3,8 +3,8 @@
  * DefectDojo API stub for end-to-end testing
  */
 
-import { readFileSync } from "fs";
 import express from "express";
+import { readFileSync } from "fs";
 
 const port = 8888;
 const app = express();

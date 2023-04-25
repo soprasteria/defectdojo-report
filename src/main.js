@@ -4,9 +4,9 @@
  */
 
 import { join } from "path";
-import { DefectDojoApiClient } from "./defectdojo.js";
 import { parseArgs } from "./cli.js";
 import { loadConfig } from "./config.js";
+import { DefectDojoApiClient } from "./defectdojo.js";
 import * as exporters from "./exports.js";
 
 export async function main() {

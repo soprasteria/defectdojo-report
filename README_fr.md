@@ -24,7 +24,7 @@ additionnelles :
 Installer Node.js >= 18 et NPM puis exécuter les commandes suivantes :
 
 ```bash
-npm i -g git+https://github.com/soprasteria/defectdojo-report.git
+npm i -g defectdojo-report
 defectdojo-report [options]
 ```
 
@@ -48,7 +48,7 @@ defectdojo-report                                          \
   --token "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"       \
   --product "product-name" --engagement "engagement-name"  \
   --status "active,!out_of_scope"                          \
-  --output "./secdebt"     --formats "csv,html"            \
+  --output "./secdebt"     --format "csv,html"             \
   --config "./config.json"
 ```
 

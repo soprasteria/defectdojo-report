@@ -22,7 +22,7 @@ application from DefectDojo with support for additional features:
 Install Node.js >= 18 and NPM, then run the following commands:
 
 ```bash
-npm i -g git+https://github.com/soprasteria/defectdojo-report.git
+npm i -g defectdojo-report
 defectdojo-report [options]
 ```
 
@@ -46,7 +46,7 @@ defectdojo-report                                          \
   --token "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"       \
   --product "product-name" --engagement "engagement-name"  \
   --status "active,!out_of_scope"                          \
-  --output "./secdebt"     --formats "csv,html"            \
+  --output "./secdebt"     --format "csv,html"             \
   --config "./config.json"
 ```
 
