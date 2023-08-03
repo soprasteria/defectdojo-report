@@ -51,10 +51,10 @@ const defaultConfig = {
     "Impact": "SEVERITY", // Audit vision
     "Ease of exploitation": "EASE",
     "Resultant criticity": "CRITICITY",
-    "Remediation effort": "", // TODO Effort for fixing vulnerability (Low, Medium or High)
+    "Remediation effort": "$.effort_for_fixing", // Effort for fixing vulnerability (Low, Medium or High)
     "Status": "$.display_status", // Open, Analyzed, Waiting, Planned, Processed, Cancelled or Duplicate
     "Recurrence": "", // TODO Recurrence (New, Recurrent, Fixed or Duplicate)
-    "Fixed application version": "", // TODO App release that contains the fix (if planned or processed)
+    "Fixed application version": "$.planned_remediation_version", // App release that contains the fix (if planned or processed)
     "Service provider responsibility": "$.sp_responsibility", // Y/N
     "Responsibility origin": "", // TODO Origin of responsibility (Framework, third-party code, detected in the beginning of the project)
     "Comments": "$.comment",
