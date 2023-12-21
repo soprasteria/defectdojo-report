@@ -22,7 +22,6 @@ describe("cli", function () {
       { name: "reject an invalid token", cli: [...url, "--token", "invalid", ...product, ...engagement], code: 1 },
       { name: "require the product", cli: [...url, ...token, ...engagement], code: 1 },
       { name: "reject an invalid product", cli: [...url, ...token, "--product", "***", ...engagement], code: 1 },
-      { name: "require the engagement", cli: [...url, ...token, ...product], code: 1 },
       { name: "reject an invalid engagement", cli: [...url, ...token, ...product, "--engagement", "***"], code: 1 },
       { name: "reject an invalid config file", cli: [...cli, "--config", "./notfound.json"], code: 1 }
     ];

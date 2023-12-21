@@ -33,7 +33,7 @@ describe("DefectDojoApiClient", function () {
   describe("#getFindings()", function () {
     it("should return findings", async function () {
       let findings;
-      await assert.doesNotReject(async () => findings = await client.getFindings([], []));
+      await assert.doesNotReject(async () => findings = await client.getFindings([], [], []));
       assert.strictEqual(10, findings.length);
     });
     it("should throw if something went wrong", async function () {

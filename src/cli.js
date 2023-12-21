@@ -39,8 +39,9 @@ const expectedOptions = [
   {
     name: "engagement",
     env: "DEFECTDOJO_ENGAGEMENT",
-    description: "Engagement name on DefectDojo",
-    pattern: /^[\w/.-]+$/
+    description: "Engagement name on DefectDojo (optional)",
+    pattern: /^[\w/.-]+$/,
+    default: null
   },
   {
     name: "status",

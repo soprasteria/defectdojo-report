@@ -75,22 +75,30 @@ export class DefectDojoApiClient {
   }
 
   /**
-   * Fetch vulnerabilities associated to one or multiple engagements.
+   * Fetch vulnerabilities associated to one or multiple products
+   * and engagements.
    *
-   * @param {string[]} engagements Engagements ids
+   * @param {string[]} products Products ids
+   * @param {string[]} engagements Engagements ids (optional)
    * @param {string[]} statuses Statuses to filter
    * @returns Vulnerabilities
    * @throws Request error
    */
-  async getFindings(engagements, statuses) {
-    console.log(`[info] Fetching findings for engagement(s) ${engagements.join(", ")}`);
+  async getFindings(products, engagements, statuses) {
+    console.log(`[info] Fetching findings for product(s) [${products.join(", ")}]`
+      + ` and engagement(s) [${engagements.join(", ")}]`);
     try {
-      const filters = statuses.map(s => s[0] !== "!" ? s + "=true" : s.slice(1) + "=false").join("&");
-      let findingsUrl = `/findings?test__engagement=${engagements.join(",")}`
-        + `&limit=100&${filters}&related_fields=true`;
+      const query = [];
+      query.push(`test__engagement__product=${products.join(",")}`);
+      if (engagements?.length > 0) {
+        query.push(`test__engagement=${engagements.join(",")}`);
+      }
+      query.push(...statuses.map(s => s[0] !== "!" ? s + "=true" : s.slice(1) + "=false"));
+      query.push("limit=100", "related_fields=true");
+      let findingsUrl = "/findings?" + query.join("&");
       const findings = [];
       let findingsPage = 0;
-      while (findingsUrl && findingsPage < 20) {
+      while (findingsUrl && findingsPage < 100) {
         console.log(`[info] Fetching findings (page ${findingsPage}): ${findingsUrl}`);
         let findingsResponse = await this.http.get(findingsUrl);
         let findingsData = findingsResponse.data;
