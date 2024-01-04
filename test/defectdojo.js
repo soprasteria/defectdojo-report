@@ -18,22 +18,35 @@ describe("DefectDojoApiClient", function () {
     });
   });
 
-  describe("#getEngagement()", function () {
-    it("should return a single engagement", async function () {
-      let engagement;
-      await assert.doesNotReject(async () => engagement = await client.getEngagement(1, "main"));
-      assert.strictEqual(engagement.id, 1);
-      assert.strictEqual(engagement.url, "http://localhost:8888/engagement/1");
+  describe("#getEngagements()", function () {
+    it("should return all product engagements when searching by product id", async function () {
+      let engagements;
+      await assert.doesNotReject(async () => engagements = await client.getEngagements(1));
+      assert.strictEqual(engagements.length, 2);
+      assert.strictEqual(engagements[0].id, 1);
+      assert.strictEqual(engagements[0].url, "http://localhost:8888/engagement/1");
+      assert.strictEqual(engagements[1].id, 2);
+      assert.strictEqual(engagements[1].url, "http://localhost:8888/engagement/2");
     });
-    it("should throw if the engagement doesn't exist", async function () {
-      await assert.rejects(() => client.getEngagement(1, "unknown"));
+    it("should return a single engagement when searching also by name", async function () {
+      let engagements;
+      await assert.doesNotReject(async () => engagements = await client.getEngagements(1, "main"));
+      assert.strictEqual(engagements.length, 1);
+      assert.strictEqual(engagements[0].id, 1);
+      assert.strictEqual(engagements[0].name, "main");
+      assert.strictEqual(engagements[0].url, "http://localhost:8888/engagement/1");
+    });
+    it("should return no engagement if none exists with the given name", async function () {
+      let engagements;
+      await assert.doesNotReject(async () => engagements = await client.getEngagements(1, "unknown"));
+      assert.strictEqual(engagements.length, 0);
     });
   });
 
   describe("#getFindings()", function () {
     it("should return findings", async function () {
       let findings;
-      await assert.doesNotReject(async () => findings = await client.getFindings([], [], []));
+      await assert.doesNotReject(async () => findings = await client.getFindings([], []));
       assert.strictEqual(10, findings.length);
     });
     it("should throw if something went wrong", async function () {

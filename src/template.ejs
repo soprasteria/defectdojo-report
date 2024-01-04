@@ -102,14 +102,16 @@
     <img class="logo" src="<%= config.logo %>" alt="Company logo">
     <%_ } -%>
     <h1><%= config.title %></h1>
-    <%_ for (let i = 0; i < products.length && i < engagements.length; i++) { -%>
+    <%_ for (const product of products) { -%>
     <h2>
-      <span><%= products[i].title %></span>
-      <%_ if (engagements[i].version) { -%>
-      <span class="tag" title="Application version"><%= engagements[i].version %></span>
+      <span><%= product.title %></span>
+      <%_ if (product.engagements?.length > 0) { -%>
+      <%_ if (engagements[0].version) { -%>
+      <span class="tag" title="Application version"><%= engagements[0].version %></span>
       <%_ } -%>
-      <%_ if (engagements[i].updated) { -%>
-      <span class="tag" title="Last security debt update"><%= engagements[i].updated.substring(0, 10) %></span>
+      <%_ if (engagements[0].updated) { -%>
+      <span class="tag" title="Last security debt update"><%= engagements[0].updated.substring(0, 10) %></span>
+      <%_ } -%>
       <%_ } -%>
     </h2>
     <%_ } -%>

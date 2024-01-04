@@ -34,7 +34,8 @@ app.get("/api/v2/products", (req, res) => {
 // GET /api/v2/engagements should return a single test engagement.
 app.get("/api/v2/engagements", (req, res) => {
   const results = [
-    { id: 1, name: "main" }
+    { id: 1, name: "main", version: "1.1.0", updated: "2024-01-01" },
+    { id: 2, name: "old", version: "1.0.0", updated: "2023-01-01" }
   ].filter(e => !req.params.name || e.name.includes(req.params.name));
   res.json({ count: results.length, results });
 });

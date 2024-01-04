@@ -32,17 +32,17 @@ export async function main() {
     }, []);
 
   // Fetch engagements
-  const engagements = !opts.engagement ? [] :
-    await products.reduce(async (prevResults, p) => {
-      const results = await prevResults;
-      const engagement = await defectDojo.getEngagement(p.id, opts.engagement)
-        .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
-      return [...results, engagement];
-    }, []);
+  const engagements = await products.reduce(async (prevResults, p) => {
+    const results = await prevResults;
+    const engagements = await defectDojo.getEngagements(p.id, opts.engagement)
+      .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
+    p.engagements = engagements;
+    return [...results, ...engagements];
+  }, []);
 
   // Fetch vulnerabilities
   const findings = await defectDojo
-    .getFindings(products.map(p => p.id), engagements.map(e => e.id), opts.status)
+    .getFindings(engagements.map(e => e.id), opts.status)
     .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
 
   /*

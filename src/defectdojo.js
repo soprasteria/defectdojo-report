@@ -40,7 +40,8 @@ export class DefectDojoApiClient {
         throw new Error("expected to find a single product");
       }
       const product = results[0];
-      product.title = product.description || product.name;
+      const d = product.description?.trim();
+      product.title = d && d.length < 60 && !d.includes("\n") ? d : product.name;
       product.url = `${this.url}/product/${product.id}`;
       console.log(`[info] Product id = ${product.id}`);
       return product;
@@ -50,49 +51,45 @@ export class DefectDojoApiClient {
   }
 
   /**
-   * Fetch an engagement by product and by name.
+   * Fetch engagements by product and name.
    *
    * @param {string} productId Product id
-   * @param {string} name Engagement name
-   * @returns The engagement
+   * @param {string} name Engagement name (optional)
+   * @returns Engagements
    * @throws Request error
    */
-  async getEngagement(productId, name) {
-    console.log(`[info] Fetching engagement '${name}' for product id '${productId}'`);
+  async getEngagements(productId, name) {
+    console.log(`[info] Fetching engagement${name ? ` '${name}'` : 's'} for product id '${productId}'`);
     try {
-      const response = await this.http.get(`/engagements?product=${productId}&name=${name}`);
-      const results = response.data?.results?.filter(e => e.name === name); // Exact match
-      if (results?.length !== 1) {
-        throw new Error("expected to find a single engagement");
-      }
-      const engagement = results[0];
-      engagement.url = `${this.url}/engagement/${engagement.id}`;
-      console.log(`[info] Engagement id = ${engagement.id}`);
-      return engagement;
+      const query = [];
+      query.push(`product=${productId}`);
+      if (name) query.push(`name=${name}`);
+      query.push("o=-updated", "limit=100");
+      const response = await this.http.get("/engagements?" + query.join("&"));
+      const engagements = response.data?.results
+        ?.filter(e => !name || e.name === name) // Exact match
+        ?.map(e => ({ ...e, url: `${this.url}/engagement/${e.id}` }))
+        ?? [];
+      console.log(`[info] Engagements count = ${engagements.length}`);
+      return engagements;
     } catch (error) {
       throw new Error(`An error occurred fetching engagements: ${error?.message ?? error}`);
     }
   }
 
   /**
-   * Fetch vulnerabilities associated to one or multiple products
-   * and engagements.
+   * Fetch vulnerabilities associated to one or multiple engagements.
    *
-   * @param {string[]} products Products ids
-   * @param {string[]} engagements Engagements ids (optional)
+   * @param {string[]} engagements Engagements ids
    * @param {string[]} statuses Statuses to filter
    * @returns Vulnerabilities
    * @throws Request error
    */
-  async getFindings(products, engagements, statuses) {
-    console.log(`[info] Fetching findings for product(s) [${products.join(", ")}]`
-      + ` and engagement(s) [${engagements.join(", ")}]`);
+  async getFindings(engagements, statuses) {
+    console.log(`[info] Fetching findings for engagement(s) [${engagements.join(", ")}]`);
     try {
       const query = [];
-      query.push(`test__engagement__product=${products.join(",")}`);
-      if (engagements?.length > 0) {
-        query.push(`test__engagement=${engagements.join(",")}`);
-      }
+      query.push(`test__engagement=${engagements.join(",")}`);
       query.push(...statuses.map(s => s[0] !== "!" ? s + "=true" : s.slice(1) + "=false"));
       query.push("limit=100", "related_fields=true");
       let findingsUrl = "/findings?" + query.join("&");
