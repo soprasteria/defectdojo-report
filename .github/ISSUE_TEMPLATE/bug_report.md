@@ -26,8 +26,8 @@ If applicable, add logs or screenshots to help explain your problem.
 **Environment (please complete the following information)**
 
 - OS: [e.g. Ubuntu 22.04]
-- Node.js version: [e.g. 20.9.0]
-- NPM version: [e.g. 10.1.0]
+- Node.js version: [e.g. 20.11.1]
+- NPM version: [e.g. 10.2.4]
 - Context: [e.g. Docker, GitLab CI, ...]
 
 **Additional context**
