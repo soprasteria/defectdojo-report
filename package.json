@@ -1,6 +1,6 @@
 {
   "name": "defectdojo-report",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Export the security debt of an application from DefectDojo",
   "main": "./src/index.js",
   "bin": "./src/index.js",
