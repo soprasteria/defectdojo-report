@@ -68,8 +68,7 @@ export async function main() {
     // Other fields
     finding.product = finding?.related_fields?.test?.engagement?.product ?? { id: -1, name: "" };
     finding.engagement = finding?.related_fields?.test?.engagement ?? { id: -1, name: "", version: "" };
-    finding.tool = finding.related_fields.test.title ||
-      finding.related_fields.test.test_type.name.replace(/Scan/g, "").trim();
+    finding.tool = finding.related_fields.test.test_type.name.replace(/ Scan($| )/g, "$1").trim();
     finding.occurrences = finding.nb_occurences || 1;
     finding.origin = finding.tags.find(t => originTags.includes(t)) ?? "";
     finding.sp_responsibility = finding.tags.includes(serviceProviderTag);
