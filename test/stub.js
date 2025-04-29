@@ -64,7 +64,7 @@ export async function mochaGlobalSetup() {
   await new Promise((resolve) => {
     server = app.listen(port, () => resolve())
   });
-};
+}
 
 /**
  * Stop the HTTP server after running tests.

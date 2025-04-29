@@ -40,8 +40,7 @@ export class DefectDojoApiClient {
         throw new Error("expected to find a single product");
       }
       const product = results[0];
-      const d = product.description?.trim();
-      product.title = d && d.length < 60 && !d.includes("\n") ? d : product.name;
+      product.title = product.name;
       product.url = `${this.url}/product/${product.id}`;
       console.log(`[info] Product id = ${product.id}`);
       return product;

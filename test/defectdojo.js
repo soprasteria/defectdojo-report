@@ -10,7 +10,7 @@ describe("DefectDojoApiClient", function () {
       let product;
       await assert.doesNotReject(async () => product = await client.getProduct("product"));
       assert.strictEqual(product.id, 1);
-      assert.strictEqual(product.title, "Product description");
+      assert.strictEqual(product.title, "product");
       assert.strictEqual(product.url, "http://localhost:8888/product/1");
     });
     it("should throw if the product doesn't exist", async function () {

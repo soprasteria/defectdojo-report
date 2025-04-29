@@ -41,7 +41,7 @@ describe("defectdojo-report", function () {
 
     // Check the HTML report content
     assert.ok(html.match(/<h1>Security Debt<\/h1>/));
-    assert.ok(html.match(/<span>Product description<\/span>/));
+    assert.ok(html.match(/<span>product<\/span>/));
     [
       { str: "#18aada", count: 2 }, // Custom primary color
       { str: "320px-Defectdojologo.png", count: 1 }, // Custom logo
