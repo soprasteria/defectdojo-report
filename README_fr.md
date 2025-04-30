@@ -22,7 +22,7 @@ additionnelles :
 
 ## Utilisation
 
-Installer Node.js >= 20 et NPM puis exécuter les commandes suivantes :
+Installer Node.js >= 22 et NPM puis exécuter les commandes suivantes :
 
 ```bash
 npm i -g defectdojo-report

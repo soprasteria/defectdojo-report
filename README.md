@@ -20,7 +20,7 @@ application from DefectDojo with support for additional features:
 
 ## Usage
 
-Install Node.js >= 20 and NPM, then run the following commands:
+Install Node.js >= 22 and NPM, then run the following commands:
 
 ```bash
 npm i -g defectdojo-report
