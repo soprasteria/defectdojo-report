@@ -72,7 +72,7 @@ export async function main() {
     finding.occurrences = finding.nb_occurences || 1;
     finding.origin = finding.tags.find(t => originTags.includes(t)) ?? "";
     finding.sp_responsibility = finding.tags.includes(serviceProviderTag);
-    finding.comment = finding.notes.join(" ");
+    finding.comment = finding.notes.map(n => n.entry ?? "").join("\n");
   }
 
   // Sort by product.name (asc), criticity_index (desc), tool (asc),

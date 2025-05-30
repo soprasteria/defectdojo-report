@@ -116,14 +116,15 @@ export function resolveField(finding, path) {
   // JSONPath
   let value = JSONPath({ path, json: finding });
   // Normalisation
-  if (Array.isArray(value)) value = value[0];
-  if (typeof value == "object") value = value?.toString() ?? "";
-  if (typeof value == "string") value = value?.trim();
+  if (Array.isArray(value)) value = value.length > 0 ? value[0] : "";
+  if (value === undefined || value === null) value = "";
+  if (typeof value == "object") value = value.toString();
+  if (typeof value == "string") value = value.trim();
   let type = "string";
   // Boolean handling
   if (typeof value == "boolean" || value === "true" || value === "false") {
     type = "boolean";
-    value = value === true || value == "true" ? true : false;
+    value = value === true || value === "true";
   }
   return { value, type };
 }

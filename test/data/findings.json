@@ -65,7 +65,11 @@
     "mitigation": "Fake mitigation",
     "file_path": "path/to/file",
     "nb_occurences": 3,
-    "notes": []
+    "notes": [
+      {
+        "entry": "Fake single note for finding #75"
+      }
+    ]
   },
   {
     "id": 76,
@@ -167,7 +171,17 @@
     "mitigation": "Fake mitigation",
     "file_path": "path/to/file",
     "nb_occurences": 1,
-    "notes": []
+    "notes": [
+      {
+        "entry": "Fake 1st note for finding #78"
+      },
+      {
+        "entry": "Fake 2nd note for finding #78"
+      },
+      {
+        "entry": "Fake 3rd note for finding #78"
+      }
+    ]
   },
   {
     "id": 74,
