@@ -1,10 +1,9 @@
-import assert from "assert";
-import { mkdir, readFile, rm } from "fs/promises";
-import { join } from "path";
-import { fileURLToPath } from "url";
+import assert from "node:assert/strict";
+import { mkdir, readFile, rm } from "node:fs/promises";
+import { join } from "node:path";
 import { main } from "../src/main.js";
 
-const outputDir = fileURLToPath(new URL("tmp", import.meta.url));
+const outputDir = join(import.meta.dirname, "tmp");
 const outputFile = join(outputDir, "secdebt");
 const argv = process.argv;
 
@@ -24,7 +23,7 @@ describe("defectdojo-report", function () {
       "--status", "active,!out_of_scope",
       "--output", outputFile,
       "--format", "csv,html,json",
-      "--config", fileURLToPath(new URL("data/config.json", import.meta.url))
+      "--config", join(import.meta.dirname, "data/config.json")
     ];
     process.env["DEFECTDOJO_TOKEN"] = "X".repeat(40);
 
@@ -58,17 +57,17 @@ describe("defectdojo-report", function () {
       { str: ">Y<", count: 3 }, // 3 vulnerabilities that must be fixed by the service provider
       { str: ">N<", count: 7 } // 7 vulnerabilities that must be fixed by the owner
     ].forEach(({ str, count }) => {
-      assert.strictEqual(html.match(new RegExp(str, "g"))?.length, count, `Invalid '${str}' count`);
+      assert.equal(html.match(new RegExp(str, "g"))?.length, count, `Invalid '${str}' count`);
     });
 
     // Check the JSON report content
     const jsonReport = JSON.parse(json);
-    assert.strictEqual(jsonReport.products?.length, 1);
-    assert.strictEqual(jsonReport.engagements?.length, 1);
-    assert.strictEqual(jsonReport.findings?.length, 10);
+    assert.equal(jsonReport.products?.length, 1);
+    assert.equal(jsonReport.engagements?.length, 1);
+    assert.equal(jsonReport.findings?.length, 10);
 
     // Check the CSV report content
-    assert.strictEqual(csv.match(/\n/g).length, 10);
+    assert.equal(csv.match(/\n/g).length, 10);
   });
 
   after(async function () {

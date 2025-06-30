@@ -7,4 +7,4 @@
 
 import { main } from "./main.js";
 
-main();
+await main();

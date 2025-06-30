@@ -3,7 +3,8 @@
  * Export a security debt from DefectDojo.
  */
 
-import { join } from "path";
+import assert from "node:assert/strict";
+import { join } from "node:path";
 import { parseArgs } from "./cli.js";
 import { loadConfig } from "./config.js";
 import { DefectDojoApiClient } from "./defectdojo.js";
@@ -16,7 +17,10 @@ export async function main() {
 
   // Load configuration
   const config = await loadConfig(opts.config)
-    .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
+    .catch((e) => {
+      console.error(`[error] ${e.message}`);
+      process.exit(1);
+    });
 
   // Initialise the DefectDojo API client
   const defectDojo = new DefectDojoApiClient(opts.url, opts.token);
@@ -27,7 +31,10 @@ export async function main() {
     .reduce(async (prevResults, p) => {
       const results = await prevResults;
       const product = await defectDojo.getProduct(p)
-        .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
+        .catch((e) => {
+          console.error(`[error] ${e.message}`);
+          process.exit(1);
+        });
       return [...results, product];
     }, []);
 
@@ -35,15 +42,23 @@ export async function main() {
   const engagements = await products.reduce(async (prevResults, p) => {
     const results = await prevResults;
     const engagements = await defectDojo.getEngagements(p.id, opts.engagement)
-      .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
+      .catch((e) => {
+        console.error(`[error] ${e.message}`);
+        process.exit(1);
+      });
     p.engagements = engagements;
     return [...results, ...engagements];
   }, []);
 
+  assert(engagements.length > 0, "No engagement found");
+
   // Fetch vulnerabilities
   const findings = await defectDojo
     .getFindings(engagements.map(e => e.id), opts.status)
-    .catch((e) => { console.error(`[error] ${e.message}`); process.exit(1); });
+    .catch((e) => {
+      console.error(`[error] ${e.message}`);
+      process.exit(1);
+    });
 
   /*
    * Process vulnerabilities
@@ -51,14 +66,16 @@ export async function main() {
 
   console.log("[info] Processing findings");
 
-  const { impacts, eases, easeTags, criticities,
-    criticityMatrix, originTags, serviceProviderTag } = config;
+  const {
+    impacts, eases, easeTags, criticities,
+    criticityMatrix, originTags, serviceProviderTag
+  } = config;
 
   // Compute additional fields
   for (const finding of findings) {
     // Resultant criticity
     finding.severity = finding.severity?.toLowerCase();
-    const i = Math.max(impacts.findIndex(i => i == finding.severity), 0);
+    const i = Math.max(impacts.findIndex(i => i === finding.severity), 0);
     const e = easeTags.indexOf(finding.tags?.find(t => easeTags.includes(t)) ?? easeTags[0]);
     finding.ease_index = e;
     finding.ease = eases[e];
@@ -82,13 +99,13 @@ export async function main() {
     (f2.severity_index - f1.severity_index) || f1.title.localeCompare(f2.title));
 
   console.log("[info] Vulnerabilities:", criticities.map(c =>
-    findings.filter(f => f.criticity == c).length + " " + c).join(", "));
+    findings.filter(f => f.criticity === c).length + " " + c).join(", "));
 
   /*
    * Generate reports
    */
 
-  const defaultReportName = "Security-Debt" + (products.length == 1 ? `_${products[0].name}` : "");
+  const defaultReportName = "Security-Debt" + (products.length === 1 ? `_${products[0].name}` : "");
   const path = opts.output ?? join(process.cwd(), defaultReportName);
 
   for (const format of opts.format) {

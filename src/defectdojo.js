@@ -52,9 +52,9 @@ export class DefectDojoApiClient {
   /**
    * Fetch engagements by product and name.
    *
-   * @param {string} productId Product id
-   * @param {string} name Engagement name (optional)
-   * @returns Engagements
+   * @param {string|number} productId Product id
+   * @param {string} [name] Engagement name (optional)
+   * @returns Promise<*> Engagements
    * @throws Request error
    */
   async getEngagements(productId, name) {
@@ -66,8 +66,8 @@ export class DefectDojoApiClient {
       query.push("o=-updated", "limit=100");
       const response = await this.http.get("/engagements?" + query.join("&"));
       const engagements = response.data?.results
-        ?.filter(e => !name || e.name === name) // Exact match
-        ?.map(e => ({ ...e, url: `${this.url}/engagement/${e.id}` }))
+          ?.filter(e => !name || e.name === name) // Exact match
+          ?.map(e => ({ ...e, url: `${this.url}/engagement/${e.id}` }))
         ?? [];
       console.log(`[info] Engagements count = ${engagements.length}`);
       return engagements;
@@ -81,7 +81,7 @@ export class DefectDojoApiClient {
    *
    * @param {string[]} engagements Engagements ids
    * @param {string[]} statuses Statuses to filter
-   * @returns Vulnerabilities
+   * @returns Promise<*> Vulnerabilities
    * @throws Request error
    */
   async getFindings(engagements, statuses) {

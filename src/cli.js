@@ -3,8 +3,9 @@
  * CLI and environment handling service
  */
 
-import { existsSync } from "fs";
-import { readFile } from "fs/promises";
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 /**
  * Statuses expected for the "status" CLI option
@@ -85,8 +86,8 @@ const expectedOptions = [
  */
 export async function parseArgs() {
   // Read package metadata from package.json
-  const npmPackageUrl = new URL("../package.json", import.meta.url);
-  const npmPackage = JSON.parse(await readFile(npmPackageUrl, { encoding: "utf8" }));
+  const npmPackagePath = join(import.meta.dirname, "../package.json");
+  const npmPackage = JSON.parse(await readFile(npmPackagePath, { encoding: "utf8" }));
 
   // Show the help message
   if (process.argv.some(a => a.match(/^--?h(elp)?$/))) {
@@ -113,7 +114,7 @@ export async function parseArgs() {
   // Extract options
   for (const opt of expectedOptions) {
     // From the command line
-    const i = process.argv.findIndex(a => a == `--${opt.name}`);
+    const i = process.argv.findIndex(a => a === `--${opt.name}`);
     let value = undefined;
     if (i >= 0 && i + 1 < process.argv.length) {
       value = process.argv[i + 1];
@@ -157,10 +158,9 @@ export class CliError extends Error {
    *
    * @param {number} exitCode Process exit code
    * @param {string} message Error message
-   * @param  {...any} args Other arguments
    */
-  constructor(exitCode = 1, message = "", ...args) {
-    super(message, ...args);
+  constructor(exitCode = 1, message = "") {
+    super(message);
     this.exitCode = exitCode;
   }
 

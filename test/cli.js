@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "node:assert/strict";
 import { CliError, parseArgs } from "../src/cli.js";
 
 describe("cli", function () {
@@ -37,8 +37,10 @@ describe("cli", function () {
           await assert.rejects(() => parseArgs(), new CliError(test.code));
         } else { // Success expected
           let opts;
-          await assert.doesNotReject(async () => { opts = await parseArgs() });
-          assert.strictEqual(Object.keys(opts).length, 8);
+          await assert.doesNotReject(async () => {
+            opts = await parseArgs();
+          });
+          assert.equal(Object.keys(opts).length, 8);
         }
       });
     }

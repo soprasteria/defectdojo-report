@@ -4,9 +4,8 @@
  */
 
 import ejs from "ejs";
-import { readFile, writeFile } from "fs/promises";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { resolveField } from "./config.js";
 
 /**
@@ -41,7 +40,7 @@ export async function exportToCSV(_products, _engagements, findings, path, confi
  */
 export async function exportToHTML(products, engagements, findings, path, config) {
   // Load the template
-  const templateFile = join(dirname(fileURLToPath(import.meta.url)), "template.ejs");
+  const templateFile = join(import.meta.dirname, "template.ejs");
   const template = await readFile(templateFile, { encoding: "utf8" });
 
   // Export vulnerabilities
