@@ -4,9 +4,9 @@
  */
 
 import ejs from "ejs";
-import { readFile, writeFile } from "fs/promises";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { readFile, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { resolveField } from "./config.js";
 
 /**

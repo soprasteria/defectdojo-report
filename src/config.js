@@ -3,7 +3,7 @@
  * Tool configuration service
  */
 
-import { readFile } from "fs/promises";
+import { readFile } from "node:fs/promises";
 import { JSONPath } from "jsonpath-plus";
 
 /**

@@ -4,7 +4,7 @@
  */
 
 import express from "express";
-import { readFileSync } from "fs";
+import { readFileSync } from "node:fs";
 
 const port = 8888;
 const app = express();
@@ -42,7 +42,7 @@ app.get("/api/v2/engagements", (req, res) => {
 
 // GET /api/v2/engagements should return some test findings.
 app.get("/api/v2/findings", (req, res) => {
-  if (req.query.test__engagement === "fatal") {
+  if (req.query["test__engagement"] === "fatal") {
     res.sendStatus(500);
     return;
   }

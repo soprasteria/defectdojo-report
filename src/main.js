@@ -3,7 +3,8 @@
  * Export a security debt from DefectDojo.
  */
 
-import { join } from "path";
+import assert from "node:assert/strict";
+import { join } from "node:path";
 import { parseArgs } from "./cli.js";
 import { loadConfig } from "./config.js";
 import { DefectDojoApiClient } from "./defectdojo.js";
@@ -40,6 +41,8 @@ export async function main() {
     return [...results, ...engagements];
   }, []);
 
+  assert(engagements.length > 0, "No engagement found");
+
   // Fetch vulnerabilities
   const findings = await defectDojo
     .getFindings(engagements.map(e => e.id), opts.status)
@@ -58,7 +61,7 @@ export async function main() {
   for (const finding of findings) {
     // Resultant criticity
     finding.severity = finding.severity?.toLowerCase();
-    const i = Math.max(impacts.findIndex(i => i == finding.severity), 0);
+    const i = Math.max(impacts.findIndex(i => i === finding.severity), 0);
     const e = easeTags.indexOf(finding.tags?.find(t => easeTags.includes(t)) ?? easeTags[0]);
     finding.ease_index = e;
     finding.ease = eases[e];
@@ -82,13 +85,13 @@ export async function main() {
     (f2.severity_index - f1.severity_index) || f1.title.localeCompare(f2.title));
 
   console.log("[info] Vulnerabilities:", criticities.map(c =>
-    findings.filter(f => f.criticity == c).length + " " + c).join(", "));
+    findings.filter(f => f.criticity === c).length + " " + c).join(", "));
 
   /*
    * Generate reports
    */
 
-  const defaultReportName = "Security-Debt" + (products.length == 1 ? `_${products[0].name}` : "");
+  const defaultReportName = "Security-Debt" + (products.length === 1 ? `_${products[0].name}` : "");
   const path = opts.output ?? join(process.cwd(), defaultReportName);
 
   for (const format of opts.format) {

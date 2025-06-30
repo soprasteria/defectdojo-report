@@ -3,8 +3,8 @@
  * CLI and environment handling service
  */
 
-import { existsSync } from "fs";
-import { readFile } from "fs/promises";
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 
 /**
  * Statuses expected for the "status" CLI option
@@ -113,7 +113,7 @@ export async function parseArgs() {
   // Extract options
   for (const opt of expectedOptions) {
     // From the command line
-    const i = process.argv.findIndex(a => a == `--${opt.name}`);
+    const i = process.argv.findIndex(a => a === `--${opt.name}`);
     let value = undefined;
     if (i >= 0 && i + 1 < process.argv.length) {
       value = process.argv[i + 1];
@@ -157,10 +157,9 @@ export class CliError extends Error {
    *
    * @param {number} exitCode Process exit code
    * @param {string} message Error message
-   * @param  {...any} args Other arguments
    */
-  constructor(exitCode = 1, message = "", ...args) {
-    super(message, ...args);
+  constructor(exitCode = 1, message = "") {
+    super(message);
     this.exitCode = exitCode;
   }
 

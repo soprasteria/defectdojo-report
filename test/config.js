@@ -1,6 +1,6 @@
-import assert from "assert";
-import { existsSync } from "fs";
-import { rm, writeFile } from "fs/promises";
+import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { rm, writeFile } from "node:fs/promises";
 import { loadConfig } from "../src/config.js";
 
 describe("config", function () {
@@ -28,7 +28,7 @@ describe("config", function () {
         } else { // Success expected
           let config;
           await assert.doesNotReject(async () => { config = await loadConfig(path) });
-          assert.notStrictEqual(config, null);
+          assert.notEqual(config, null);
         }
       });
     }

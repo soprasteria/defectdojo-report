@@ -52,9 +52,9 @@ export class DefectDojoApiClient {
   /**
    * Fetch engagements by product and name.
    *
-   * @param {string} productId Product id
-   * @param {string} name Engagement name (optional)
-   * @returns Engagements
+   * @param {string|number} productId Product id
+   * @param {string} [name] Engagement name (optional)
+   * @returns Promise<any> Engagements
    * @throws Request error
    */
   async getEngagements(productId, name) {
@@ -81,7 +81,7 @@ export class DefectDojoApiClient {
    *
    * @param {string[]} engagements Engagements ids
    * @param {string[]} statuses Statuses to filter
-   * @returns Vulnerabilities
+   * @returns Promise<any> Vulnerabilities
    * @throws Request error
    */
   async getFindings(engagements, statuses) {
