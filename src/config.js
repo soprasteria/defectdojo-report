@@ -65,7 +65,7 @@ const defaultConfig = {
 /**
  * Load and validate the tool configuration.
  *
- * @param {string} path Path to the configuration customisation JSON file
+ * @param {string} [path] Path to the configuration customisation JSON file
  * @returns {Promise<*>} The tool configuration
  * @throws Invalid configuration
  */
